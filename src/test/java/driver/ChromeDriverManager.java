@@ -4,10 +4,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import staticdata.WebTimeouts;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 
 
 public class ChromeDriverManager {
@@ -17,7 +14,6 @@ public class ChromeDriverManager {
     public ChromeDriverManager() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--no-sandbox");
         driver = new ChromeDriver(options);
@@ -25,12 +21,6 @@ public class ChromeDriverManager {
 
     public WebDriver getDriver() {
         return driver;
-    }
-
-    public void setTimeout() {
-        driver.manage().timeouts().scriptTimeout(WebTimeouts.SCRIPT_TIMEOUT);
-        driver.manage().timeouts().pageLoadTimeout(WebTimeouts.PAGE_LOAD_TIMEOUT);
-        driver.manage().timeouts().implicitlyWait(WebTimeouts.IMPLICIT_TIMEOUT);
     }
 
     public void maximize() {
