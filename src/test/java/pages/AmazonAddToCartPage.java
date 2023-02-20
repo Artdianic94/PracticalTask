@@ -100,9 +100,11 @@ public class AmazonAddToCartPage extends BasePage {
 
 
     public boolean whatInCart() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.navigate().back();
         driver.findElement(AMAZON_LOGO).click();
         driver.findElement(CART_BTN).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(ALL_PRODUCTS_IN_CART));
         List<WebElement> listOfProductsInCart = driver.findElements(ALL_PRODUCTS_IN_CART);
         boolean isContain = false;
         for (int i = 0; i < listOfProductsInCart.size(); i++) {
