@@ -61,8 +61,8 @@ public class AmazonAddToCartPage extends BasePage {
 
     public String checkForAddingToCart() {
         String alertText;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
             LOGGER.info("Wait for a message about adding a product to the cart");
             wait.until(ExpectedConditions.visibilityOfElementLocated(ALERT_MESSAGE_SUCCESSFUL));
             alertText = driver.findElement(ALERT_MESSAGE_SUCCESSFUL).getText();
@@ -76,6 +76,7 @@ public class AmazonAddToCartPage extends BasePage {
         } catch (NoSuchElementException | TimeoutException exception) {
             alertText = driver.findElement(ANOTHER_ALERT_MESSAGE).getText();
             LOGGER.info(String.format("Message about adding a product to the cart: %s", alertText));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(ANOTHER_TICK_ICON));
             if (driver.findElement(ANOTHER_TICK_ICON).isDisplayed()) {
                 if (alertText.contains("Added")) {
                     LOGGER.info("There is a green tick in the message.");
@@ -87,6 +88,7 @@ public class AmazonAddToCartPage extends BasePage {
     }
 
     public String numberOnCart() {
+        driver.navigate().refresh();
         String numberOnCart = driver.findElement(CART_BTN).getText();
         LOGGER.info(String.format("Number of products in cart: %s", numberOnCart));
         return numberOnCart;

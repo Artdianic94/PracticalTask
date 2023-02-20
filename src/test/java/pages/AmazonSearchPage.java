@@ -5,7 +5,10 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 
@@ -30,6 +33,9 @@ public class AmazonSearchPage extends BasePage {
 
     public List<WebElement> getListOfAllProducts() {
         LOGGER.info(String.format("Get a list of all products found on request %s", productName));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        LOGGER.info("Wait for a message about adding a product to the cart");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(iPhonesXpath)));
         allIphones = driver.findElements(By.xpath(iPhonesXpath));
         return allIphones;
     }
