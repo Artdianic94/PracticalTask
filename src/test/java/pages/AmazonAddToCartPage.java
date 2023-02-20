@@ -36,6 +36,7 @@ public class AmazonAddToCartPage extends BasePage {
     }
 
     public void addProductToCart() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         amazonSearchPage = new AmazonSearchPage(driver);
         allIphones = amazonSearchPage.getListOfAllProducts();
         iphoneIndex.append(iPhonesXpath);
@@ -45,6 +46,7 @@ public class AmazonAddToCartPage extends BasePage {
             driver.findElement(By.xpath(String.valueOf(iphoneIndex))).click();
             try {
                 if (driver.findElement(ADD_TO_CART_BTN).isDisplayed()) {
+                    wait.until(ExpectedConditions.visibilityOfElementLocated(PRODUCT_TITLE));
                     productAddedToCart = driver.findElement(PRODUCT_TITLE).getText();
                     driver.findElement(ADD_TO_CART_BTN).click();
                     LOGGER.info(String.format("Searched product with a title %s was added in Cart", productAddedToCart));
