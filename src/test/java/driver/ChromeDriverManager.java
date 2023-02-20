@@ -14,6 +14,7 @@ public class ChromeDriverManager {
     public ChromeDriverManager() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
         options.addArguments("--disable-notifications");
         driver = new ChromeDriver();
     }
