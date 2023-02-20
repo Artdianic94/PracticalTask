@@ -43,6 +43,7 @@ public class AmazonAddToCartPage extends BasePage {
         for (int i = 1; i <= allIphones.size(); i++) {
             iphoneIndex.append("[").append(i).append("]");
             LOGGER.info("Search for a product that can be added to the Cart");
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.valueOf(iphoneIndex))));
             driver.findElement(By.xpath(String.valueOf(iphoneIndex))).click();
             try {
                 if (driver.findElement(ADD_TO_CART_BTN).isDisplayed()) {
