@@ -15,7 +15,7 @@ public class BaseTest {
     AmazonAuthorizationPage amazonAuthorizationPage;
 
     @BeforeEach
-    public void setUp() throws MalformedURLException {
+    public void setUp(){
         chromeDriverManager = new ChromeDriverManager();
         driver = chromeDriverManager.getDriver();
         chromeDriverManager.maximize();
