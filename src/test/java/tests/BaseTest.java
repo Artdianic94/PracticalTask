@@ -6,13 +6,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 import pages.AmazonAuthorizationPage;
 
+import java.net.MalformedURLException;
+
 public class BaseTest {
     WebDriver driver;
     ChromeDriverManager chromeDriverManager;
     AmazonAuthorizationPage amazonAuthorizationPage;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws MalformedURLException {
         chromeDriverManager = new ChromeDriverManager();
         driver = chromeDriverManager.getDriver();
         chromeDriverManager.maximize();

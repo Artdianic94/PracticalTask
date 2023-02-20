@@ -4,19 +4,23 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import staticdata.WebTimeouts;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 public class ChromeDriverManager {
 
     private WebDriver driver;
 
-    public ChromeDriverManager() {
+    public ChromeDriverManager() throws MalformedURLException {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("--disable-notifications");
-        driver = new ChromeDriver();
+        driver = new RemoteWebDriver(new URL("http://localhost:4444"), options);
     }
 
     public WebDriver getDriver() {
