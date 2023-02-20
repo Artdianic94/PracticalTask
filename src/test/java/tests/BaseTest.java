@@ -8,13 +8,14 @@ import pages.AmazonAuthorizationPage;
 
 import java.net.MalformedURLException;
 
+
 public class BaseTest {
     WebDriver driver;
     ChromeDriverManager chromeDriverManager;
     AmazonAuthorizationPage amazonAuthorizationPage;
 
     @BeforeEach
-    public void setUp() throws MalformedURLException {
+    public void setUp(){
         chromeDriverManager = new ChromeDriverManager();
         driver = chromeDriverManager.getDriver();
         chromeDriverManager.maximize();
