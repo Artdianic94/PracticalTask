@@ -17,7 +17,7 @@ public class AmazonAddToCartPage extends BasePage {
     private final By AMAZON_LOGO = By.id("nav-logo-sprites");
     private final By TICK_ICON = By.xpath("//div[@id='attachDisplayAddBaseAlert']//i[@class='a-icon a-icon-alert']");
     private final By ANOTHER_TICK_ICON = By.xpath("//div[@id='sw-atc-confirmation']//i[@class='a-icon a-icon-alert']");
-    private final By ALL_PRODUCTS_IN_CART = By.xpath("//div[@class='sc-item-content-group']//span[@class='a-truncate-cut']");
+    private final By ALL_PRODUCTS_IN_CART = By.xpath("//div[@class='sc-item-content-group']//span[@class='a-truncate-full a-offscreen']");
     private final By PRODUCT_TITLE = By.id("productTitle");
     String deleteInputXpath = "(//input[@value='Delete'])";
     List<WebElement> deleteAllProductsInCart;
@@ -102,15 +102,15 @@ public class AmazonAddToCartPage extends BasePage {
 
 
     public boolean whatInCart() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.navigate().back();
         driver.findElement(AMAZON_LOGO).click();
         driver.findElement(CART_BTN).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ALL_PRODUCTS_IN_CART));
         List<WebElement> listOfProductsInCart = driver.findElements(ALL_PRODUCTS_IN_CART);
+        System.out.println(productAddedToCart);
         boolean isContain = false;
         for (int i = 0; i < listOfProductsInCart.size(); i++) {
-            if (listOfProductsInCart.get(i).getText().contains(productAddedToCart)) {
+            System.out.println(listOfProductsInCart.get(i).getText());
+            if (productAddedToCart.contains(listOfProductsInCart.get(i).getText())) {
                 isContain = true;
                 LOGGER.info(String.format("Product with a title %s is in Cart", listOfProductsInCart.get(i).getText()));
                 break;
