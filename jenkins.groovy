@@ -1,82 +1,41 @@
-task_branch = "${TEST_BRANCH_NAME}"
-def branch_cutted = task_branch.contains("origin") ? task_branch.split('/')[1] : task_branch.trim()
-currentBuild.displayName = "$branch_cutted"
-base_git_url = "https://github.com/Artdianic94/PracticalTask.git"
+pipeline {
+    agent any
 
+    tools {
+        gradle "gradle jenkins"
+    }
 
-node {
-    withEnv(["branch=${branch_cutted}", "base_url=${base_git_url}"]) {
-        stage("Checkout Branch") {
-            if (!"$branch_cutted".contains("master")) {
-                try {
-                    getProject("$base_git_url", "$branch_cutted")
-                } catch (err) {
-                    echo "Failed get branch $branch_cutted"
-                    throw ("${err}")
+    stages {
+        stage('Build') {
+            steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/Artdianic94/PracticalTask.git'
+
+                // Run Gradle on a Unix agent.
+                // sh "gradle clean test"
+
+            }
+
+            post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
                 }
-            } else {
-                echo "Current branch is master"
             }
         }
-        try {
-            stage("Run tests") {
-                parallel(
-                        'Ui Tests': {
-                            runTestWithTag("AmazonAddProductTest")
-                            runTestWithTag("AmazonAuthorizationTest")
-                            runTestWithTag("AmazonProductInCartTest")
-                            runTestWithTag("AmazonSearchProductsTest")
-                        }
-                )
-            }
-        } finally {
-            stage("Allure") {
-                generateAllure()
+        stage('reports') {
+            steps {
+                script {
+                    allure([
+                            includeProperties: false,
+                            jdk: '',
+                            properties: [],
+                            reportBuildPolicy: 'ALWAYS',
+                            results: [[path: 'allure-results']]
+                    ])
+                }
             }
         }
-
     }
 }
-
-
-def getTestStages(testTags) {
-    def stages = [:]
-    testTags.each { tag ->
-        stages["${tag}"] = {
-            runTestWithTag(tag)
-        }
-    }
-    return stages
-}
-
-
-def runTestWithTag(String tag) {
-    try {
-        labelledShell(label: "Run ${tag}", "chmod +x gradlew \n./gradlew -x test ${tag}")
-    } finally {
-        echo "some failed tests"
-    }
-}
-
-def getProject(String repo, String branch) {
-    cleanWs()
-    checkout scm: [
-            $class           : 'GitSCM', branches: [[name: branch]],
-            userRemoteConfigs: [[
-                                        url: repo
-                                ]]
-    ]
-}
-
-def generateAllure() {
-    allure([
-            includeProperties: true,
-            jdk              : '',
-            properties       : [],
-            reportBuildPolicy: 'ALWAYS',
-            results          : [[path: 'build/allure-results']]
-    ])
-}
-
-
-
