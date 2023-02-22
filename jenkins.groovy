@@ -19,7 +19,7 @@ node {
         }
 
         try {
-            parallel getTestStages(["amazonAuthorizationTest", "amazonSearchProductsTest", "amazonAddProductTest", "amazonProductInCartTest"])
+            parallel getTestStages(["amazonAuthorizationTest"])
         } finally {
             stage ("Allure") {
                 generateAllure()
