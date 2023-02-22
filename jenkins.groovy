@@ -19,7 +19,9 @@ node {
         }
 
         try {
-            parallel getTestStages(["amazonTest"])
+
+             sh "gradle clean test"
+
         } finally {
             stage ("Allure") {
                 generateAllure()
