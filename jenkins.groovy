@@ -19,7 +19,7 @@ node {
         }
 
         try {
-            parallel getTestStages(["amazonTest"])
+             getTestStages(["amazonTest"])
         } finally {
             stage ("Allure") {
                 generateAllure()
