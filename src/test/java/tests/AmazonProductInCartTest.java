@@ -10,12 +10,13 @@ import pages.AmazonSearchPage;
 public class AmazonProductInCartTest extends BaseTest {
     AmazonSearchPage amazonSearchPage;
     AmazonAddToCartPage amazonAddToCartPage;
+    String productName = "iPhone";
 
     @BeforeEach
     public void loginAndOpenProduct() {
         amazonSearchPage = new AmazonSearchPage(driver);
         amazonAddToCartPage = new AmazonAddToCartPage(driver);
-        amazonSearchPage.sendSearchingText();
+        amazonSearchPage.sendSearchingText(productName);
         amazonAddToCartPage.addProductToCart();
         amazonAddToCartPage.checkForAddingToCart();
     }

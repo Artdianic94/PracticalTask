@@ -39,10 +39,10 @@ public class AmazonAddToCartPage extends BasePage {
     }
 
     @Step("Search for the product and add it to the Cart")
-    public void addProductToCart() {
+    public void addProductToCart(String productName) {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         amazonSearchPage = new AmazonSearchPage(driver);
-        allIphones = amazonSearchPage.getListOfAllProducts();
+        allIphones = amazonSearchPage.getListOfAllProducts(productName);
         iphoneIndex.append(iPhonesXpath);
         for (int i = 1; i <= allIphones.size(); i++) {
             iphoneIndex.append("[").append(i).append("]");

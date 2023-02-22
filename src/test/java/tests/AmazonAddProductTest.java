@@ -10,12 +10,13 @@ public class AmazonAddProductTest extends BaseTest {
     AmazonAuthorizationPage amazonAuthorizationPage;
     AmazonSearchPage amazonSearchPage;
     AmazonAddToCartPage amazonAddToCartPage;
+    String productName = "iPhone";
 
     @BeforeEach
     public void loginAndOpenProduct() {
         amazonSearchPage = new AmazonSearchPage(driver);
-        amazonSearchPage.sendSearchingText();
-        amazonSearchPage.getListOfAllProducts();
+        amazonSearchPage.sendSearchingText(productName);
+        amazonSearchPage.getListOfAllProducts(productName);
     }
 
     @Test
@@ -23,7 +24,7 @@ public class AmazonAddProductTest extends BaseTest {
             " is a successful message with green tick and 1 is displayed on the Cart")
     public void checkCartTest() {
         amazonAddToCartPage = new AmazonAddToCartPage(driver);
-        amazonAddToCartPage.addProductToCart();
+        amazonAddToCartPage.addProductToCart(productName);
         String actualProductAddMessage = amazonAddToCartPage.checkForAddingToCart();
         String actualNumberOnCart = amazonAddToCartPage.numberOnCart();
         Assertions.assertEquals("Added to Cart", actualProductAddMessage);
