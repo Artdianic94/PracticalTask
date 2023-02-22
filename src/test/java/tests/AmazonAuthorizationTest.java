@@ -15,7 +15,7 @@ public class AmazonAuthorizationTest extends BaseTest {
     public void authorizationTest() {
         amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
         String actualStringOnLogInBTN = amazonAuthorizationPage.getSignInResult();
-        String expectedStringOnLogInBTN = "Hello, Diana!";
+        String expectedStringOnLogInBTN = "Hello, Diana";
         Assertions.assertEquals(expectedStringOnLogInBTN, actualStringOnLogInBTN);
     }
 }
