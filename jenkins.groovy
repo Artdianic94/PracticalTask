@@ -22,7 +22,10 @@ node {
             stage("Run tests") {
                 parallel(
                         'Ui Tests': {
-                            runTestWithTag("UI")
+                            runTestWithTag("AmazonAddProductTest")
+                            runTestWithTag("AmazonAuthorizationTest")
+                            runTestWithTag("AmazonProductInCartTest")
+                            runTestWithTag("AmazonSearchProductsTest")
                         }
                 )
             }
@@ -49,7 +52,7 @@ def getTestStages(testTags) {
 
 def runTestWithTag(String tag) {
     try {
-        labelledShell("chmod +x gradlew \n./gradlew clean test")
+        labelledShell(label: "Run ${tag}", "chmod +x gradlew \n./gradlew -x test ${tag}")
     } finally {
         echo "some failed tests"
     }
