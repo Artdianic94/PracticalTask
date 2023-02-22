@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import pages.AmazonSearchPage;
 
-@Tag("amazonSearchProductsTest")
+@Tag("Amazon")
 public class AmazonSearchProductsTest extends BaseTest {
     AmazonSearchPage amazonSearchPage;
     String productName = "iPhone";

@@ -6,7 +6,7 @@ import pages.AmazonAddToCartPage;
 import pages.AmazonAuthorizationPage;
 import pages.AmazonSearchPage;
 
-@Tag("amazonAddProductTest")
+@Tag("Amazon")
 public class AmazonAddProductTest extends BaseTest {
     AmazonAuthorizationPage amazonAuthorizationPage;
     AmazonSearchPage amazonSearchPage;

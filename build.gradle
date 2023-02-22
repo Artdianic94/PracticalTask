@@ -33,26 +33,12 @@ dependencies {
     testRuntimeOnly('org.slf4j:slf4j-simple:1.7.33',
             "org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
-def amazonAuthorizationTest = tasks.register("amazonAuthorizationTest", Test) {
+def amazonTest = tasks.register("amazonTest", Test) {
     useJUnitPlatform {
-        includeTags "amazonAuthorizationTest"
+        includeTags "Amazon"
     }
 }
-def amazonSearchProductsTest = tasks.register("amazonSearchProductsTest", Test) {
-    useJUnitPlatform {
-        includeTags "amazonSearchProductsTest"
-    }
-}
-def amazonAddProductTest = tasks.register("amazonAddProductTest", Test) {
-    useJUnitPlatform {
-        includeTags "amazonAddProductTest"
-    }
-}
-def amazonProductInCartTest = tasks.register("amazonProductInCartTest", Test) {
-    useJUnitPlatform {
-        includeTags "amazonProductInCartTest"
-    }
-}
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
     sourceCompatibility = 11
