@@ -12,7 +12,7 @@ import pages.AmazonSearchPage;
 public class AmazonSearchProductsTest extends TestBase {
     AmazonSearchPage amazonSearchPage;
     String productName = "iPhone";
-    @Tag("Amazon")
+
     @Test
     @Description(value = "The test checks that only searched iPhones are displayed on the page")
     public void searchProductsTest() {

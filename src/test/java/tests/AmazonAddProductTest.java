@@ -19,7 +19,7 @@ public class AmazonAddProductTest extends TestBase {
         amazonSearchPage.sendSearchingText(productName);
         amazonSearchPage.getListOfAllProducts(productName);
     }
-    @Tag("Amazon")
+
     @Test
     @Description(value = "The test checks that when user adds an item to Cart there" +
             " is a successful message with green tick and 1 is displayed on the Cart")

@@ -21,7 +21,7 @@ public class AmazonProductInCartTest extends TestBase {
         amazonAddToCartPage.addProductToCart(productName);
         amazonAddToCartPage.checkForAddingToCart();
     }
-    @Tag("Amazon")
+
     @Test
     @Description(value = "The test checks that the Cart contains the added Phone")
     public void checkProductsInCartTest() {

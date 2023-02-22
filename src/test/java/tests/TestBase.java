@@ -6,6 +6,7 @@ import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.extension.TestWatcher;
@@ -14,7 +15,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import pages.AmazonAuthorizationPage;
 import utilities.ScreenshotWatcher;
-
+@Tag("Amazon")
 public class TestBase {
     public WebDriver driver;
     public static ChromeDriverManager chromeDriverManager;
