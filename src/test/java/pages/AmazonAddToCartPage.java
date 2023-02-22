@@ -110,7 +110,7 @@ public class AmazonAddToCartPage extends BasePage {
     @Step("Getting list of products that are in the Cart")
     public boolean whatInCart() {
         driver.navigate().back();
-        driver.findElement(AMAZON_LOGO).click();
+       // driver.findElement(AMAZON_LOGO).click();
         driver.findElement(CART_BTN).click();
         List<WebElement> listOfProductsInCart = driver.findElements(ALL_PRODUCTS_IN_CART);
         boolean isContain = false;
