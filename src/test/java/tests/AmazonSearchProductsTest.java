@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 
 import pages.AmazonSearchPage;
 
-@Tag("Amazon")
+
 public class AmazonSearchProductsTest extends BaseTest {
     AmazonSearchPage amazonSearchPage;
     String productName = "iPhone";
-
+    @Tag("Amazon")
     @Test
     @Description(value = "The test checks that only searched iPhones are displayed on the page")
     public void searchProductsTest() {

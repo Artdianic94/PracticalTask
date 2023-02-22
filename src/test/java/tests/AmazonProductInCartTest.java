@@ -7,7 +7,7 @@ import pages.AmazonAddToCartPage;
 import pages.AmazonAuthorizationPage;
 import pages.AmazonSearchPage;
 
-@Tag("Amazon")
+
 public class AmazonProductInCartTest extends BaseTest {
     AmazonSearchPage amazonSearchPage;
     AmazonAddToCartPage amazonAddToCartPage;
@@ -21,7 +21,7 @@ public class AmazonProductInCartTest extends BaseTest {
         amazonAddToCartPage.addProductToCart(productName);
         amazonAddToCartPage.checkForAddingToCart();
     }
-
+    @Tag("Amazon")
     @Test
     @Description(value = "The test checks that the Cart contains the added Phone")
     public void checkProductsInCartTest() {

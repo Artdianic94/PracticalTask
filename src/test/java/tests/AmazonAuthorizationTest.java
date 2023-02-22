@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.AmazonAuthorizationPage;
 
-@Tag("Amazon")
+
 public class AmazonAuthorizationTest extends BaseTest {
     AmazonAuthorizationPage amazonAuthorizationPage;
-
+    @Tag("Amazon")
     @Test
     @Description(value = "The test checks for a greeting on the page for an authorized user")
     public void authorizationTest() {

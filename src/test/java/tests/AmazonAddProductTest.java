@@ -6,7 +6,7 @@ import pages.AmazonAddToCartPage;
 import pages.AmazonAuthorizationPage;
 import pages.AmazonSearchPage;
 
-@Tag("Amazon")
+
 public class AmazonAddProductTest extends BaseTest {
     AmazonAuthorizationPage amazonAuthorizationPage;
     AmazonSearchPage amazonSearchPage;
@@ -19,7 +19,7 @@ public class AmazonAddProductTest extends BaseTest {
         amazonSearchPage.sendSearchingText(productName);
         amazonSearchPage.getListOfAllProducts(productName);
     }
-
+    @Tag("Amazon")
     @Test
     @Description(value = "The test checks that when user adds an item to Cart there" +
             " is a successful message with green tick and 1 is displayed on the Cart")
