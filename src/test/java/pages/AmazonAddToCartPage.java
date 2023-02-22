@@ -17,6 +17,7 @@ public class AmazonAddToCartPage extends BasePage {
     private final By ANOTHER_ALERT_MESSAGE = By.xpath("//div[@id='sw-atc-details-single-container']//div[@id='NATC_SMART_WAGON_CONF_MSG_SUCCESS']");
     private final By CART_BTN = By.id("nav-cart-count");
     private final By AMAZON_LOGO = By.id("nav-logo-sprites");
+    private final By CLOSE_ALERT_BTN = By.id("attach-close_sideSheet-link");
     private final By TICK_ICON = By.xpath("//div[@id='attachDisplayAddBaseAlert']//i[@class='a-icon a-icon-alert']");
     private final By ANOTHER_TICK_ICON = By.xpath("//div[@id='sw-atc-confirmation']//i[@class='a-icon a-icon-alert']");
     private final By ALL_PRODUCTS_IN_CART = By.xpath("//div[@class='sc-item-content-group']//span[@class='a-truncate-full a-offscreen']");
@@ -109,8 +110,12 @@ public class AmazonAddToCartPage extends BasePage {
 
     @Step("Getting list of products that are in the Cart")
     public boolean whatInCart() {
+        try {
+            driver.findElement(CLOSE_ALERT_BTN).click();
+        } catch (NoSuchElementException ignored) {
+        }
         driver.navigate().back();
-       // driver.findElement(AMAZON_LOGO).click();
+        driver.findElement(AMAZON_LOGO).click();
         driver.findElement(CART_BTN).click();
         List<WebElement> listOfProductsInCart = driver.findElements(ALL_PRODUCTS_IN_CART);
         boolean isContain = false;
