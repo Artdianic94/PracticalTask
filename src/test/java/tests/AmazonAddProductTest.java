@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.*;
 import pages.AmazonAddToCartPage;
 import pages.AmazonAuthorizationPage;
@@ -18,6 +19,8 @@ public class AmazonAddProductTest extends BaseTest {
     }
 
     @Test
+    @Description(value = "The test checks that when user adds an item to Cart there" +
+            " is a successful message with green tick and 1 is displayed on the Cart")
     public void checkCartTest() {
         amazonAddToCartPage = new AmazonAddToCartPage(driver);
         amazonAddToCartPage.addProductToCart();

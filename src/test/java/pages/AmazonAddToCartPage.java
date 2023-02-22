@@ -1,6 +1,7 @@
 package pages;
 
 
+import io.qameta.allure.Step;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
@@ -11,6 +12,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class AmazonAddToCartPage extends BasePage {
+    WebDriverWait wait;
     private final By ALERT_MESSAGE_SUCCESSFUL = By.id("attachDisplayAddBaseAlert");
     private final By ANOTHER_ALERT_MESSAGE = By.xpath("//div[@id='sw-atc-details-single-container']//div[@id='NATC_SMART_WAGON_CONF_MSG_SUCCESS']");
     private final By CART_BTN = By.id("nav-cart-count");
@@ -35,8 +37,9 @@ public class AmazonAddToCartPage extends BasePage {
         super(driver);
     }
 
+    @Step("Search for the product and add it to the Cart")
     public void addProductToCart() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         amazonSearchPage = new AmazonSearchPage(driver);
         allIphones = amazonSearchPage.getListOfAllProducts();
         iphoneIndex.append(iPhonesXpath);
@@ -62,6 +65,7 @@ public class AmazonAddToCartPage extends BasePage {
         }
     }
 
+    @Step("Waiting for a message about adding a product to the Cart")
     public String checkForAddingToCart() {
         String alertText;
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -90,6 +94,7 @@ public class AmazonAddToCartPage extends BasePage {
         return alertText;
     }
 
+    @Step("Getting a number on the Cart")
     public String numberOnCart() {
         driver.navigate().refresh();
         String numberOnCart = driver.findElement(CART_BTN).getText();
@@ -97,20 +102,19 @@ public class AmazonAddToCartPage extends BasePage {
         return numberOnCart;
     }
 
+    @Step("Getting a colour of the tick when product was added to the Cart ")
     public boolean isTickIconGreen() {
         return isTickIconGreen;
     }
 
-
+    @Step("Getting list of products that are in the Cart")
     public boolean whatInCart() {
         driver.navigate().back();
         driver.findElement(AMAZON_LOGO).click();
         driver.findElement(CART_BTN).click();
         List<WebElement> listOfProductsInCart = driver.findElements(ALL_PRODUCTS_IN_CART);
-        System.out.println(productAddedToCart);
         boolean isContain = false;
         for (int i = 0; i < listOfProductsInCart.size(); i++) {
-            System.out.println(listOfProductsInCart.get(i).getText());
             if (productAddedToCart.contains(listOfProductsInCart.get(i).getText())) {
                 isContain = true;
                 LOGGER.info(String.format("Product with a title %s is in Cart", listOfProductsInCart.get(i).getText()));
@@ -120,7 +124,7 @@ public class AmazonAddToCartPage extends BasePage {
         return isContain;
     }
 
-
+    @Step("Clear the shopping Cart")
     public void cleanCart() {
         LOGGER.info("Delete all products in Cart");
         driver.findElement(CART_BTN).click();

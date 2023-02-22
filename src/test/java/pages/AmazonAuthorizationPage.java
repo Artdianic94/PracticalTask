@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -23,11 +24,13 @@ public class AmazonAuthorizationPage extends BasePage {
         super(driver);
     }
 
+    @Step("Open main page " + WebUrls.AMAZON_URL)
     public void openMainPage() {
         LOGGER.info(String.format("Open website: %s", WebUrls.AMAZON_URL));
         driver.get(WebUrls.AMAZON_URL);
     }
 
+    @Step("Send login and password to the login form")
     public void makeLogin() {
         Actions actions = new Actions(driver);
         LOGGER.info("Move the cursor over 'Account & Lists' and wait for the tab to open.");
@@ -42,6 +45,7 @@ public class AmazonAuthorizationPage extends BasePage {
         driver.findElement(SIGN_IN_SUBMIT_BTN).click();
     }
 
+    @Step("Getting user greeting inscription")
     public String getSignInResult() {
         LOGGER.info("Get user greeting inscription");
         return driver.findElement(USER_WELCOME_STRING).getText();

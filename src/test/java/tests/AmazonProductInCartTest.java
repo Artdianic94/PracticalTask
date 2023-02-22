@@ -1,6 +1,7 @@
 package tests;
 
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.*;
 import pages.AmazonAddToCartPage;
 import pages.AmazonAuthorizationPage;
@@ -20,6 +21,7 @@ public class AmazonProductInCartTest extends BaseTest {
     }
 
     @Test
+    @Description(value = "The test checks that the Cart contains the added Phone")
     public void checkProductsInCartTest() {
         boolean actualProduct = amazonAddToCartPage.whatInCart();
         Assertions.assertTrue(actualProduct, "Cart doesn't contain added product");
