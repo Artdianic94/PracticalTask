@@ -6,6 +6,7 @@ pipeline {
     }
 
     stages {
+        try {
         stage('Build') {
             steps {
                 // Get some code from a GitHub repository
@@ -23,17 +24,18 @@ pipeline {
                     junit '**/target/surefire-reports/TEST-*.xml'
                 }
             }
-        }
-        stage('reports') {
-            steps {
-                script {
-                    allure([
-                            includeProperties: false,
-                            jdk: '',
-                            properties: [],
-                            reportBuildPolicy: 'ALWAYS',
-                            results: [[path: 'allure-results']]
-                    ])
+        }}finally {
+            stage('reports') {
+                steps {
+                    script {
+                        allure([
+                                includeProperties: true,
+                                jdk              : '',
+                                properties       : [],
+                                reportBuildPolicy: 'ALWAYS',
+                                results          : [[path: 'build/allure-results']]
+                        ])
+                    }
                 }
             }
         }
