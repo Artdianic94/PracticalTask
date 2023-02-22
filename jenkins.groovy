@@ -6,7 +6,6 @@ pipeline {
     }
 
     stages {
-        try {
         stage('Build') {
             steps {
                 // Get some code from a GitHub repository
@@ -24,7 +23,7 @@ pipeline {
                     junit '**/target/surefire-reports/TEST-*.xml'
                 }
             }
-        }}finally {
+        }
             stage('reports') {
                 steps {
                     script {
@@ -38,6 +37,5 @@ pipeline {
                     }
                 }
             }
-        }
     }
 }
