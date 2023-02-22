@@ -9,7 +9,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 public class ChromeDriverManager {
 
-    private WebDriver driver;
+    private final WebDriver driver;
 
     public ChromeDriverManager() {
         WebDriverManager.chromedriver().setup();

@@ -20,7 +20,7 @@ node {
 
         try {
 
-            sh './gradlew test'
+            sh './gradlew clean test'
 
         } finally {
             stage ("Allure") {
