@@ -6,6 +6,7 @@ import pages.AmazonAddToCartPage;
 import pages.AmazonAuthorizationPage;
 import pages.AmazonSearchPage;
 
+@Tag("UI")
 public class AmazonAddProductTest extends BaseTest {
     AmazonAuthorizationPage amazonAuthorizationPage;
     AmazonSearchPage amazonSearchPage;
@@ -28,7 +29,7 @@ public class AmazonAddProductTest extends BaseTest {
         String actualProductAddMessage = amazonAddToCartPage.checkForAddingToCart();
         String actualNumberOnCart = amazonAddToCartPage.numberOnCart();
         Assertions.assertEquals("Added to Cart", actualProductAddMessage);
-        Assertions.assertEquals("1",actualNumberOnCart);
+        Assertions.assertEquals("1", actualNumberOnCart);
         Assertions.assertTrue(amazonAddToCartPage.isTickIconGreen());
     }
 

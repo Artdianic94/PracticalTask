@@ -7,6 +7,7 @@ import pages.AmazonAddToCartPage;
 import pages.AmazonAuthorizationPage;
 import pages.AmazonSearchPage;
 
+@Tag("UI")
 public class AmazonProductInCartTest extends BaseTest {
     AmazonSearchPage amazonSearchPage;
     AmazonAddToCartPage amazonAddToCartPage;
@@ -17,7 +18,7 @@ public class AmazonProductInCartTest extends BaseTest {
         amazonSearchPage = new AmazonSearchPage(driver);
         amazonAddToCartPage = new AmazonAddToCartPage(driver);
         amazonSearchPage.sendSearchingText(productName);
-        amazonAddToCartPage.addProductToCart();
+        amazonAddToCartPage.addProductToCart(productName);
         amazonAddToCartPage.checkForAddingToCart();
     }
 
