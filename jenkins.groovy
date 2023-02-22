@@ -18,14 +18,20 @@ node {
                 echo "Current branch is master"
             }
         }
-
         try {
-            parallel getTestStages(["amazonAddProductTest", "amazonAuthorizationTest", "amazonProductInCartTest", "amazonSearchProductsTest"])
+            stage("Run tests") {
+                parallel(
+                        'Ui Tests': {
+                            runTestWithTag("UI")
+                        }
+                )
+            }
         } finally {
             stage("Allure") {
                 generateAllure()
             }
         }
+
     }
 }
 
