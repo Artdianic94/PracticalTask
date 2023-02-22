@@ -12,7 +12,7 @@ pipeline {
                 git 'https://github.com/Artdianic94/PracticalTask.git'
 
                 // Run Gradle on a Unix agent.
-                // sh "gradle clean test"
+                 sh "gradle clean test"
 
             }
 
