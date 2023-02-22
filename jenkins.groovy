@@ -3,7 +3,6 @@ def branch_cutted = task_branch.contains("origin") ? task_branch.split('/')[1] :
 currentBuild.displayName = "$branch_cutted"
 base_git_url = "https://github.com/Artdianic94/PracticalTask.git"
 
-
 node {
     withEnv(["branch=${branch_cutted}", "base_url=${base_git_url}"]) {
         stage("Checkout Branch") {
@@ -20,9 +19,9 @@ node {
         }
 
         try {
-            getTestStages(["amazonAuthorizationTest", "amazonSearchProductsTest", "amazonAddProductTest", "amazonProductInCartTest"])
+            parallel getTestStages(["amazonAuthorizationTest", "amazonSearchProductsTest", "amazonAddProductTest", "amazonProductInCartTest"])
         } finally {
-            stage("Allure") {
+            stage ("Allure") {
                 generateAllure()
             }
         }
@@ -68,3 +67,5 @@ def generateAllure() {
             results          : [[path: 'build/allure-results']]
     ])
 }
+
+
