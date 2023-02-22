@@ -15,7 +15,7 @@ import org.openqa.selenium.WebDriver;
 import pages.AmazonAuthorizationPage;
 import utilities.ScreenshotWatcher;
 
-public class BaseTest {
+public class TestBase {
     public WebDriver driver;
     public static ChromeDriverManager chromeDriverManager;
     AmazonAuthorizationPage amazonAuthorizationPage;

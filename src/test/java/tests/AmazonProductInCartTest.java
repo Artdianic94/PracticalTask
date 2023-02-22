@@ -8,7 +8,7 @@ import pages.AmazonAuthorizationPage;
 import pages.AmazonSearchPage;
 
 
-public class AmazonProductInCartTest extends BaseTest {
+public class AmazonProductInCartTest extends TestBase {
     AmazonSearchPage amazonSearchPage;
     AmazonAddToCartPage amazonAddToCartPage;
     String productName = "iPhone";

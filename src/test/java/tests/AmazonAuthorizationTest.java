@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import pages.AmazonAuthorizationPage;
 
 
-public class AmazonAuthorizationTest extends BaseTest {
+public class AmazonAuthorizationTest extends TestBase {
     AmazonAuthorizationPage amazonAuthorizationPage;
     @Tag("Amazon")
     @Test

@@ -7,7 +7,7 @@ import pages.AmazonAuthorizationPage;
 import pages.AmazonSearchPage;
 
 
-public class AmazonAddProductTest extends BaseTest {
+public class AmazonAddProductTest extends TestBase {
     AmazonAuthorizationPage amazonAuthorizationPage;
     AmazonSearchPage amazonSearchPage;
     AmazonAddToCartPage amazonAddToCartPage;
