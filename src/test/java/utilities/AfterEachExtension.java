@@ -1,38 +1,28 @@
 package utilities;
 
-
-import java.util.Optional;
-
 import io.qameta.allure.Allure;
+import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 
+import java.util.Optional;
 
-public class ScreenshotWatcher implements TestWatcher {
+public class AfterEachExtension implements AfterEachCallback {
+    private WebDriver driver;
 
-    private static WebDriver driver;
-
-    public static void setDriver(WebDriver driver) {
-        ScreenshotWatcher.driver = driver;
+    public void setDriver(WebDriver driver) {
+        this.driver = driver;
     }
 
     @Override
-    public void testAborted(ExtensionContext context, Throwable throwable) {
-
-    }
-
-    @Override
-    public void testDisabled(ExtensionContext context, Optional<String> optional) {
-        // do something
-    }
-
-    @Override
-    public void testFailed(ExtensionContext context, Throwable throwable) {
-        saveUrlAndScreenShot();
+    public void afterEach(ExtensionContext context) {
+        if (context.getExecutionException().isPresent()) {
+            saveUrlAndScreenShot();
+        }
+        driver.quit();
     }
 
     public void saveUrlAndScreenShot() {
@@ -50,12 +40,4 @@ public class ScreenshotWatcher implements TestWatcher {
             return Optional.empty();
         }
     }
-
-
-    @Override
-    public void testSuccessful(ExtensionContext extensionContext) {
-        // do something
-    }
-
 }
-

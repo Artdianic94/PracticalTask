@@ -1,7 +1,6 @@
 package driver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -26,10 +25,5 @@ public class ChromeDriverManager {
 
     public void maximize() {
         driver.manage().window().maximize();
-    }
-
-    @Step("Stop the application")
-    public void quitDriver() {
-        driver.quit();
     }
 }
