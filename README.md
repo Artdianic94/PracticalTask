@@ -13,6 +13,7 @@ A project to automate the testing of the Amazon web application. There are 4 tes
 <div>
   <img src="https://github.com/devicons/devicon/blob/master/icons/java/java-original-wordmark.svg" title="Java" alt="Java" width="40" height="40"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/gradle/gradle-plain.svg" title="Gradle" alt="Gradle" width="40" height="40"/>&nbsp;
+  <img src="https://play-lh.googleusercontent.com/8weIaB75j3eCHkY6DOoeQu-S3c7OMjrPtzFPJvJ-SKitwiOqFa3kOcR54lShxN0ijg=w480-h960-rw" title="JUnit5" alt="JUnit5" width="40" height="40"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/selenium/selenium-original.svg" title="Selenium" alt="Selenium" width="40" height="40"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/docker/docker-original-wordmark.svg" title="Docker" alt="Docker" width="40" height="40"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/jenkins/jenkins-original.svg" title="Jenkins" alt="Jenkins" width="40" height="40"/>&nbsp
@@ -51,7 +52,7 @@ A project to automate the testing of the Amazon web application. There are 4 tes
 
 4. Run myjenkins-blueocean:2.375.3-1 image as a container in Docker using the following docker run command:
 
-> docker run \
+  > docker run \
   --name jenkins-blueocean \
   --restart=on-failure \
   --detach \
@@ -66,4 +67,32 @@ A project to automate the testing of the Amazon web application. There are 4 tes
   myjenkins-blueocean:2.375.3-1 
   
   5. Open http://localhost:8080
-  6. Configure pipeline in Jenkins (Git Repository, Script Path 'jenkins.groovy')
+  6. Unlock your Jenkins:
+    
+    6.1 to get the password, open the terminal of the container "jenkins-docker docker:dind" and run the query:
+   
+   > cat /var/jenkins_home/secrets/initialAdminPassword
+   
+    6.2 copy the password and paste it into the field
+  
+  7. Install suggested plugins
+  
+  8. Create admin login & password
+  
+  9.Configure Jenkins:
+  
+    9.1 Managing Plugins -> Available -> Enter "Allure" (tick) -> Enter "labelled" (tick) -> Install without restart
+    
+    9.2 Configuration of global tools -> Add Gradle (add name ex."gradle jenkins" and tick install automatically) -> 
+    Add Allure Commandline (add name ex."allure jenkins" and tick install automatically) -> Save
+    
+  10. Create Item -> Create Name of Pipeline -> Ok
+  
+    10.1 Global -> Add description -> Tick "This is a parameterized build" and choose "String Parametr" -> 
+    Add Name: TEST_BRANCH_NAME -> Enter Default value: master -> In the "Pipeline" section, select definition 'Pipeline script
+    from SCM' -> In "SCM" select definition 'GIT' -> Enter 'https://github.com/Artdianic94/PracticalTask.git' in "Repository URL" ->
+    Enter 'jenkins.groovy' in "Script Path" -> Save
+  
+  11. Build now
+
+    
