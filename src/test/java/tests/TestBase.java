@@ -1,20 +1,14 @@
 package tests;
 
 import driver.ChromeDriverManager;
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.junit.jupiter.api.extension.TestWatcher;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import pages.AmazonAuthorizationPage;
-import utilities.ScreenshotWatcher;
+import utilities.AfterEachExtension;
 
 public class TestBase {
     public WebDriver driver;
@@ -22,25 +16,7 @@ public class TestBase {
     AmazonAuthorizationPage amazonAuthorizationPage;
 
     @RegisterExtension
-    public TestWatcher watchman = new TestWatcher() {
-
-        @Override
-        public void testFailed(ExtensionContext context, Throwable throwable) {
-            screenshot();
-        }
-
-        @Attachment(value = "Page screenshot", type = "image/png")
-        public byte[] saveScreenshot(byte[] screenShot) {
-            return screenShot;
-        }
-
-        public void screenshot() {
-            if (driver == null) {
-                return;
-            }
-            saveScreenshot(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES));
-        }
-    };
+    AfterEachExtension afterEachExtension = new AfterEachExtension();
 
     @BeforeEach
     @Step("Start the application")
@@ -51,12 +27,12 @@ public class TestBase {
         amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
         amazonAuthorizationPage.openMainPage();
         amazonAuthorizationPage.makeLogin();
-        ScreenshotWatcher.setDriver(driver);
     }
 
 
-    @AfterAll()
-    static void quit() {
-        chromeDriverManager.quitDriver();
+    @AfterEach()
+    @Step("Stop the application")
+    public void quit() {
+        afterEachExtension.setDriver(driver);
     }
 }
