@@ -19,8 +19,9 @@ node {
         }
 
         try {
-
-            sh './gradlew clean test'
+            stage("Test") {
+                sh './gradlew clean test'
+            }
 
         } finally {
             stage("Allure") {
