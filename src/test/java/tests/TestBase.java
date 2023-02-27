@@ -3,9 +3,7 @@ package tests;
 import com.google.common.collect.ImmutableMap;
 import driver.ChromeDriverManager;
 import io.qameta.allure.Step;
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -14,7 +12,6 @@ import pages.AmazonAuthorizationPage;
 import staticdata.WebUrls;
 import utilities.AfterEachExtension;
 
-import java.io.File;
 
 import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
