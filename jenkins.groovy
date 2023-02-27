@@ -29,6 +29,15 @@ node {
         }
     }
 }
+def getProject(String repo, String branch) {
+    cleanWs()
+    checkout scm: [
+            $class           : 'GitSCM', branches: [[name: branch]],
+            userRemoteConfigs: [[
+                                        url: repo
+                                ]]
+    ]
+}
 
 def generateAllure() {
     allure([
