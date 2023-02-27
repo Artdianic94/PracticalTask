@@ -4,7 +4,7 @@ currentBuild.displayName = "$branch_cutted"
 base_git_url = "https://gitlab.com/epickonfetka/cicd-threadqa.git"
 
 
-node {
+pipeline {
     withEnv(["branch=${branch_cutted}", "base_url=${base_git_url}"]) {
         stage("Checkout Branch") {
             if (!"$branch_cutted".contains("master")) {
