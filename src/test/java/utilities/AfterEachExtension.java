@@ -27,7 +27,7 @@ public class AfterEachExtension implements AfterEachCallback {
 
     public void saveUrlAndScreenShot() {
         String currentURL = driver.getCurrentUrl();
-        Allure.addAttachment("URL", currentURL);
+        Allure.addAttachment("URL","text/uri-list", currentURL);
 
         getScreenshotBytes(driver).ifPresent(bytes -> Allure.getLifecycle()
                 .addAttachment("Screenshot", "image/png", "png", bytes));
