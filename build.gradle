@@ -34,7 +34,9 @@ dependencies {
             "org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 def amazonTest = tasks.register("amazonTest", Test) {
-    useJUnitPlatform ()
+    useJUnitPlatform {
+        includeTags "Amazon"
+    }
 }
 
 tasks.withType(JavaCompile) {
@@ -42,7 +44,8 @@ tasks.withType(JavaCompile) {
     sourceCompatibility = 11
     targetCompatibility = 11
 }
-tasks.withType(Test) {
+test {
     useJUnitPlatform()
 }
+
 

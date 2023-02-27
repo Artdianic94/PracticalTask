@@ -3,10 +3,11 @@ package tests;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.Assertions;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.AmazonAuthorizationPage;
 
-
+@Tag("Amazon")
 public class AmazonAuthorizationTest extends TestBase {
     AmazonAuthorizationPage amazonAuthorizationPage;
 
