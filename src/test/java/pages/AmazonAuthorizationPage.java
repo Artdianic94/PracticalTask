@@ -6,11 +6,16 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import staticdata.AmazonLoginCredentials;
 import staticdata.WebUrls;
 
+import java.time.Duration;
+
 
 public class AmazonAuthorizationPage extends BasePage {
+    WebDriverWait wait;
     private final By SIGN_IN_ACCOUNT_LIST = By.id("nav-link-accountList");
     private final By SIGN_IN_BTN = By.id("nav-flyout-ya-signin");
     private final By EMAIL_INPUT = By.id("ap_email");
@@ -48,6 +53,8 @@ public class AmazonAuthorizationPage extends BasePage {
     @Step("Getting user greeting inscription")
     public String getSignInResult() {
         LOGGER.info("Get user greeting inscription");
+        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(USER_WELCOME_STRING));
         return driver.findElement(USER_WELCOME_STRING).getText();
     }
 }
