@@ -4,6 +4,7 @@ import io.qameta.allure.Step;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -52,9 +53,14 @@ public class AmazonAuthorizationPage extends BasePage {
 
     @Step("Getting user greeting inscription")
     public String getSignInResult() {
-        LOGGER.info("Get user greeting inscription");
-        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(USER_WELCOME_STRING));
-        return driver.findElement(USER_WELCOME_STRING).getText();
+        try {
+            LOGGER.info("Get user greeting inscription");
+//            wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//            wait.until(ExpectedConditions.visibilityOfElementLocated(USER_WELCOME_STRING));
+            return driver.findElement(USER_WELCOME_STRING).getText();
+        }catch (NoSuchElementException e){
+            LOGGER.error("You have to enter the characters manually");
+            return "Greeting inscription not found";
+        }
     }
 }
