@@ -22,6 +22,8 @@ allure {
 
 dependencies {
     implementation group: 'log4j', name: 'log4j', version: '1.2.17'
+    // https://mvnrepository.com/artifact/com.github.automatedowl/allure-environment-writer
+    implementation group: 'com.github.automatedowl', name: 'allure-environment-writer', version: '1.0.0'
     //noinspection GradlePackageUpdate
     testImplementation('org.aspectj:aspectjweaver:1.9.7',
             "org.seleniumhq.selenium:selenium-java:4.4.0",
