@@ -19,8 +19,12 @@ node {
         }
 
         try {
-
-            sh 'chmod +x gradlew \\n./gradlew clean test'
+            stage ('Build') {
+                sh './gradlew build'
+            }
+            stage ('Test') {
+                sh './gradlew clean test'
+            }
 
         } finally {
             stage("Allure") {
