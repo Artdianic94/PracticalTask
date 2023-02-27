@@ -20,7 +20,7 @@ node {
 
         try {
 
-            sh './gradlew clean test'
+            sh 'chmod +x gradlew \\n./gradlew clean test'
 
         } finally {
             stage("Allure") {
