@@ -7,11 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.UnexpectedException;
-
-import java.time.Duration;
 
 public class AmazonAuthorizationPage extends BasePage {
     private final By YOUR_ACCOUNT = By.xpath("//a[contains(.,'Your Account')]");
@@ -53,11 +49,9 @@ public class AmazonAuthorizationPage extends BasePage {
 
     @Step("Getting user greeting inscription")
     public String getSignInResult() throws UnexpectedException {
-        if (driver.findElement(USER_WELCOME_STRING).isDisplayed()) {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(USER_WELCOME_STRING));
+        try {
             return driver.findElement(USER_WELCOME_STRING).getText();
-        } else {
+        } catch (NoSuchElementException ex) {
             throw new UnexpectedException("Text on the page:" + driver.findElement(TEXT_ON_PAGE).getText());
         }
     }
