@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-
 public class ChromeDriverManager {
 
     private final WebDriver driver;
@@ -14,16 +13,13 @@ public class ChromeDriverManager {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
-        options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
-        options.addArguments("--no-sandbox"); // Bypass OS security model
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox");
+        options.addArguments("window-size=1920,1080");
         driver = new ChromeDriver(options);
     }
 
     public WebDriver getDriver() {
         return driver;
-    }
-
-    public void maximize() {
-        driver.manage().window().maximize();
     }
 }

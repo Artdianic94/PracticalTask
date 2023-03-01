@@ -7,18 +7,19 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import pages.AmazonAddToCartPage;
 import pages.AmazonAuthorizationPage;
 import staticdata.WebUrls;
 import utilities.AfterEachExtension;
-
+import utilities.PropertiesManager;
 
 import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
 public class TestBase {
     public WebDriver driver;
     public static ChromeDriverManager chromeDriverManager;
-    AmazonAuthorizationPage amazonAuthorizationPage;
 
     @RegisterExtension
     AfterEachExtension afterEachExtension = new AfterEachExtension();
@@ -26,12 +27,12 @@ public class TestBase {
     @BeforeEach
     @Step("Start the application")
     public void setUp() {
+        PropertiesManager propertiesManager = new PropertiesManager();
         chromeDriverManager = new ChromeDriverManager();
         driver = chromeDriverManager.getDriver();
-        chromeDriverManager.maximize();
-        amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
-        amazonAuthorizationPage.openMainPage();
-        amazonAuthorizationPage.makeLogin();
+        AmazonAuthorizationPage amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
+        amazonAuthorizationPage.openMainPage(WebUrls.AMAZON_URL);
+        amazonAuthorizationPage.makeLogin(propertiesManager.get("EMAIL"), propertiesManager.get("PASSWORD"));
     }
 
     @BeforeEach
@@ -48,6 +49,11 @@ public class TestBase {
     @AfterEach()
     @Step("Stop the application")
     public void quit() {
-        afterEachExtension.setDriver(driver);
+        try {
+            AmazonAddToCartPage amazonAddToCartPage = new AmazonAddToCartPage(driver);
+            amazonAddToCartPage.cleanCart();
+        } catch (NoSuchElementException e) {
+            afterEachExtension.setDriver(driver);
+        }
     }
 }

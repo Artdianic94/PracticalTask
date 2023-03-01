@@ -1,12 +1,9 @@
 package tests;
 
-
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.*;
 import pages.AmazonAddToCartPage;
-import pages.AmazonAuthorizationPage;
 import pages.AmazonSearchPage;
-
 
 public class AmazonProductInCartTest extends TestBase {
     AmazonSearchPage amazonSearchPage;
@@ -18,22 +15,14 @@ public class AmazonProductInCartTest extends TestBase {
         amazonSearchPage = new AmazonSearchPage(driver);
         amazonAddToCartPage = new AmazonAddToCartPage(driver);
         amazonSearchPage.sendSearchingText(productName);
-        amazonAddToCartPage.addProductToCart(productName);
-        amazonAddToCartPage.checkForAddingToCart();
+        amazonAddToCartPage.addProductThatHasAddBtn(amazonSearchPage.getListOfSearchProduct(productName));
+        amazonAddToCartPage.getTextFromMessage();
     }
 
     @Test
     @Description(value = "The test checks that the Cart contains the added Phone")
     public void checkProductsInCartTest() {
-        boolean actualProduct = amazonAddToCartPage.whatInCart();
+        boolean actualProduct = amazonAddToCartPage.doesCartContainSelectedProduct();
         Assertions.assertTrue(actualProduct, "Cart doesn't contain added product");
-    }
-
-    @AfterEach
-    public void cleanData() {
-        AmazonAuthorizationPage amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
-        amazonAuthorizationPage.openMainPage();
-        amazonAddToCartPage = new AmazonAddToCartPage(driver);
-        amazonAddToCartPage.cleanCart();
     }
 }
