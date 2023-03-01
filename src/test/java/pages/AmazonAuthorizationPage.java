@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utilities.UnexpectedException;
+
 import java.time.Duration;
 
 public class AmazonAuthorizationPage extends BasePage {
@@ -20,7 +22,7 @@ public class AmazonAuthorizationPage extends BasePage {
     private final By PASSWORD_INPUT = By.id("ap_password");
     private final By SIGN_IN_SUBMIT_BTN = By.id("signInSubmit");
     private final By USER_WELCOME_STRING = By.id("nav-link-accountList-nav-line-1");
-    private final By CAPTCHA_HEADER = By.xpath("//h4[@class='a-alert-heading']");
+    private final By TEXT_ON_PAGE = By.xpath("//h4[@class='a-alert-heading']");
     private static final Logger LOGGER = LogManager.getLogger(AmazonAuthorizationPage.class.getName());
 
     public AmazonAuthorizationPage(WebDriver driver) {
@@ -50,14 +52,13 @@ public class AmazonAuthorizationPage extends BasePage {
     }
 
     @Step("Getting user greeting inscription")
-    public String getSignInResult() {
-        try {
+    public String getSignInResult() throws UnexpectedException {
+        if (driver.findElement(USER_WELCOME_STRING).isDisplayed()) {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
             wait.until(ExpectedConditions.visibilityOfElementLocated(USER_WELCOME_STRING));
             return driver.findElement(USER_WELCOME_STRING).getText();
-        } catch (NoSuchElementException e) {
-            LOGGER.error("You should enter captcha manually");
-            return driver.findElement(CAPTCHA_HEADER).getText();
+        } else {
+            throw new UnexpectedException("Text on the page:" + driver.findElement(TEXT_ON_PAGE).getText());
         }
     }
 }
