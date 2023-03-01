@@ -19,8 +19,9 @@ node {
         }
 
         try {
-
-            sh './gradlew clean test'
+            stage("Test") {
+                sh './gradlew clean test'
+            }
 
         } finally {
             stage("Allure") {
@@ -48,5 +49,15 @@ def generateAllure() {
             results          : [[path: 'build/allure-results']]
     ])
 }
+def getProject(String repo, String branch) {
+    cleanWs()
+    checkout scm: [
+            $class           : 'GitSCM', branches: [[name: branch]],
+            userRemoteConfigs: [[
+                                        url: repo
+                                ]]
+    ]
+}
+
 
 
