@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import utilities.UnexpectedException;
+import utilities.CaptchaException;
 
 public class AmazonAuthorizationPage extends BasePage {
     private final By YOUR_ACCOUNT = By.xpath("//a[contains(.,'Your Account')]");
@@ -29,7 +29,7 @@ public class AmazonAuthorizationPage extends BasePage {
     public void makeLogin(String email, String password) {
         try {
             driver.findElement(YOUR_ACCOUNT).click();
-            LOGGER.error("Another type of Amazon home page has been opened.");
+            LOGGER.warn("Another type of Amazon home page has been opened.");
         } catch (NoSuchElementException ignored) {
         }
         moveOverAccountAndSignIn();
@@ -48,11 +48,11 @@ public class AmazonAuthorizationPage extends BasePage {
     }
 
     @Step("Getting user greeting inscription")
-    public String getSignInResult() throws UnexpectedException {
+    public String getSignInResult() throws CaptchaException {
         try {
             return driver.findElement(USER_WELCOME_STRING).getText();
         } catch (NoSuchElementException ex) {
-            throw new UnexpectedException("Text on the page:" + driver.findElement(TEXT_ON_PAGE).getText());
+            throw new CaptchaException("Text on the page:" + driver.findElement(TEXT_ON_PAGE).getText());
         }
     }
 }

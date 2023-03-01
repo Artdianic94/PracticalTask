@@ -4,13 +4,13 @@ import io.qameta.allure.Description;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pages.AmazonAuthorizationPage;
-import utilities.UnexpectedException;
+import utilities.CaptchaException;
 
 public class AmazonAuthorizationTest extends TestBase {
 
     @Test
     @Description(value = "The test checks for a greeting on the page for an authorized user")
-    public void authorizationTest() throws UnexpectedException {
+    public void authorizationTest() throws CaptchaException {
         AmazonAuthorizationPage amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
         String actualStringOnLogInBTN = amazonAuthorizationPage.getSignInResult();
         String expectedStringOnLogInBTN = "Hello, Diana";
