@@ -32,7 +32,7 @@ public class TestBase {
         driver = chromeDriverManager.getDriver();
         AmazonAuthorizationPage amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
         amazonAuthorizationPage.openMainPage(WebUrls.AMAZON_URL);
-        amazonAuthorizationPage.makeLogin(propertiesManager.get("EMAIL"), propertiesManager.get("PASSWORD"));
+        amazonAuthorizationPage.makeLogin(propertiesManager.get("email"), propertiesManager.get("password"));
     }
 
     @BeforeEach
