@@ -10,7 +10,7 @@ public class PropertiesManager {
     private Properties prop;
 
     public PropertiesManager() {
-        propertyFilePath = System.getProperty("user.dir") + "/src/test/resources/Jenkinsfile";
+        propertyFilePath = System.getProperty("user.dir") + "/src/test/resources/Jenkinsfile.groovy";
     }
 
     private void loadData() {
