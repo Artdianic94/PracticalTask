@@ -1,5 +1,6 @@
 package utilities;
 
+import javax.script.ScriptContext;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -9,8 +10,9 @@ public class PropertiesManager {
     private String propertyFilePath;
     private Properties prop;
 
+
     public PropertiesManager() {
-        propertyFilePath = System.getProperty("user.dir") + "/src/test/resources/Jenkinsfile.groovy";
+        propertyFilePath = System.getProperty("user.dir")+"/Jenkinsfile";
     }
 
     private void loadData() {
