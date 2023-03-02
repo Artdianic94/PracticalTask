@@ -2,11 +2,12 @@ task_branch = "${TEST_BRANCH_NAME}"
 def branch_cutted = task_branch.contains("origin") ? task_branch.split('/')[1] : task_branch.trim()
 currentBuild.displayName = "$branch_cutted"
 base_git_url = "https://github.com/Artdianic94/PracticalTask.git"
-def email = "${amazon_email}"
-def password = "${amazon_password}"
+
 
 node {
-    withEnv(["branch=${branch_cutted}", "base_url=${base_git_url}"]) {
+email = "${amazon_email}"
+password = "${amazon_password}"
+    withEnv(["branch=${branch_cutted}", "base_url=${base_git_url}") {
         stage("Checkout Branch") {
             if (!"$branch_cutted".contains("master")) {
                 try {
