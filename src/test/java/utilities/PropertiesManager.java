@@ -12,7 +12,7 @@ public class PropertiesManager {
 
 
     public PropertiesManager() {
-        propertyFilePath = System.getProperty("user.dir")+"/Jenkinsfile";
+        propertyFilePath = System.getProperty("user.dir")+"/Credentials";
     }
 
     private void loadData() {
