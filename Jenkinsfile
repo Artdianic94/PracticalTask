@@ -7,7 +7,7 @@ base_git_url = "https://github.com/Artdianic94/PracticalTask.git"
 node {
 email = "${amazon_email}"
 password = "${amazon_password}"
-    withEnv(["branch=${branch_cutted}", "base_url=${base_git_url}") {
+    withEnv(["branch=${branch_cutted}", "base_url=${base_git_url}"]) {
         stage("Checkout Branch") {
             if (!"$branch_cutted".contains("master")) {
                 try {
