@@ -16,13 +16,13 @@ public class AmazonAddToCartPage extends BasePage {
     private final By CART_BTN = By.id("nav-cart-count");
     private final By AMAZON_LOGO = By.id("nav-logo-sprites");
     private final By CLOSE_ALERT_BTN = By.id("attach-close_sideSheet-link");
-    private final By TICK_ICON = By.xpath("//div[@id='attachDisplayAddBaseAlert']//i[@class='a-icon a-icon-alert']");
-    private final By ANOTHER_TICK_ICON = By.xpath("//div[@id='sw-atc-confirmation']//i[@class='a-icon a-icon-alert']");
     private final By ALL_PRODUCTS_IN_CART = By.xpath("//div[@class='sc-item-content-group']//span[@class='a-truncate-full a-offscreen']");
     private final By PRODUCT_TITLE = By.id("productTitle");
     private final By ADD_TO_CART_BTN = By.id("add-to-cart-button");
-    private final By IPHONE_IN_LIST = By.xpath("(//div[@class='a-section']//span[contains(text(), 'iPhone')])");
     private final By DELETE_PRODUCT_IN_CART = By.xpath("(//input[@value='Delete'])");
+    private final By TICK_ICON_IN_ALERT = By.xpath("//div[@id='attachDisplayAddBaseAlert']//i[@class='a-icon a-icon-alert']");
+    private final By TICK_ICON_ON_PAGE = By.xpath("//div[@id='NATC_SMART_WAGON_CONF_MSG_SUCCESS']//i[@class='a-icon a-icon-alert']");
+    private final String iphoneXpath = "(//div[@class='a-section']//span[contains(text(), 'iPhone')])[%s]";
     private static String productAddedToCart;
     private String alertText;
     private static final Logger LOGGER = LogManager.getLogger(AmazonSearchPage.class.getName());
@@ -32,11 +32,12 @@ public class AmazonAddToCartPage extends BasePage {
     }
 
     @Step("Search for the product that has add button")
-    public void addProductThatHasAddBtn(List<WebElement> allIphones) {
-        for (int i = 0; i < allIphones.size(); i++) {
-            driver.findElements(IPHONE_IN_LIST).get(i).click();
+    public String addProductThatHasAddBtn(List<WebElement> allIphones) {
+        for (int i = 1; i <= allIphones.size(); i++) {
+            driver.findElement(By.xpath(String.format(iphoneXpath, i))).click();
             try {
                 if (driver.findElement(ADD_TO_CART_BTN).isDisplayed()) {
+                    productAddedToCart = getProductThatWasAddedInCart();
                     addToCart();
                     break;
                 }
@@ -45,30 +46,27 @@ public class AmazonAddToCartPage extends BasePage {
                 driver.navigate().back();
             }
         }
+        return productAddedToCart;
+    }
+
+    @Step("Getting the name of the product that was added to the Cart")
+    private String getProductThatWasAddedInCart() {
+        return driver.findElement(PRODUCT_TITLE).getText();
     }
 
     @Step("Add product to the Cart")
     public void addToCart() {
-        productAddedToCart = driver.findElement(PRODUCT_TITLE).getText();
         driver.findElement(ADD_TO_CART_BTN).click();
-        LOGGER.info(String.format("Searched product with a title %s was added in Cart", productAddedToCart));
-
     }
 
     @Step("Get an alert message after adding the product to the cart")
-    public void getAlertMessage() {
+    private void getAlertMessage() {
         alertText = driver.findElement(ALERT_MESSAGE_SUCCESSFUL).getText();
-        if (driver.findElement(TICK_ICON).isDisplayed()) {
-            isTickIconGreen();
-        }
     }
 
     @Step("Get a simple message after adding the product to the cart")
-    public void getAnotherTypeOfMessage() {
+    private void getAnotherTypeOfMessage() {
         alertText = driver.findElement(ANOTHER_ALERT_MESSAGE).getText();
-        if (driver.findElement(ANOTHER_TICK_ICON).isDisplayed()) {
-            isTickIconGreen();
-        }
     }
 
     @Step("Waiting for a message about adding a product to the Cart")
@@ -92,26 +90,28 @@ public class AmazonAddToCartPage extends BasePage {
         return numberOnCart;
     }
 
-    @Step("Getting a colour of the tick when product was added to the Cart ")
-    public boolean isTickIconGreen() {
-        boolean isTickIconGreen;
-        if (alertText.contains("Added")) {
-            isTickIconGreen = true;
-        } else {
-            isTickIconGreen = false;
-            LOGGER.info("Product wasn't added in Cart");
+    @Step("Getting an area of the image with a tick")
+    public String getImageAreaWithTick() {
+        try {
+            return driver.findElement(TICK_ICON_IN_ALERT).getCssValue("background-position");
+        } catch (NoSuchElementException e) {
+            return driver.findElement(TICK_ICON_ON_PAGE).getCssValue("background-position");
         }
-        return isTickIconGreen;
     }
 
-    @Step("Getting list of products that are in the Cart")
-    public boolean doesCartContainSelectedProduct() {
+    @Step("Return to the main Page")
+    private void returnToMainPage() {
         try {
             driver.findElement(CLOSE_ALERT_BTN).click();
         } catch (NoSuchElementException ignored) {
         }
         driver.navigate().back();
         driver.findElement(AMAZON_LOGO).click();
+    }
+
+    @Step("Checking whether the Cart contains the added product")
+    public boolean doesCartContainSelectedProduct(String productAddedToCart) {
+        returnToMainPage();
         driver.findElement(CART_BTN).click();
         List<WebElement> listOfProductsInCart = driver.findElements(ALL_PRODUCTS_IN_CART);
         boolean isContain = false;

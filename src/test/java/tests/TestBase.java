@@ -31,7 +31,7 @@ public class TestBase {
         chromeDriverManager = new ChromeDriverManager();
         driver = chromeDriverManager.getDriver();
         AmazonAuthorizationPage amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
-        amazonAuthorizationPage.openMainPage(WebUrls.AMAZON_URL);
+        amazonAuthorizationPage.openPage(WebUrls.AMAZON_URL);
         amazonAuthorizationPage.makeLogin(propertiesManager.get("EMAIL"), propertiesManager.get("PASSWORD"));
     }
 
@@ -52,8 +52,8 @@ public class TestBase {
         try {
             AmazonAddToCartPage amazonAddToCartPage = new AmazonAddToCartPage(driver);
             amazonAddToCartPage.cleanCart();
-        } catch (NoSuchElementException e) {
-            afterEachExtension.setDriver(driver);
+        } catch (NoSuchElementException ignored) {
         }
+        afterEachExtension.setDriver(driver);
     }
 }

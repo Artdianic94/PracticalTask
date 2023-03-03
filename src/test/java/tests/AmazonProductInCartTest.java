@@ -9,20 +9,20 @@ public class AmazonProductInCartTest extends TestBase {
     AmazonSearchPage amazonSearchPage;
     AmazonAddToCartPage amazonAddToCartPage;
     String productName = "iPhone";
+    String actualProductThatWasAdded;
 
     @BeforeEach
     public void loginAndOpenProduct() {
         amazonSearchPage = new AmazonSearchPage(driver);
         amazonAddToCartPage = new AmazonAddToCartPage(driver);
         amazonSearchPage.sendSearchingText(productName);
-        amazonAddToCartPage.addProductThatHasAddBtn(amazonSearchPage.getListOfSearchProduct(productName));
+        actualProductThatWasAdded = amazonAddToCartPage.addProductThatHasAddBtn(amazonSearchPage.getListOfSearchProduct(productName));
         amazonAddToCartPage.getTextFromMessage();
     }
 
     @Test
-    @Description(value = "The test checks that the Cart contains the added Phone")
+    @Description(value = "The test checks that the Cart contains the added IPhone")
     public void checkProductsInCartTest() {
-        boolean actualProduct = amazonAddToCartPage.doesCartContainSelectedProduct();
-        Assertions.assertTrue(actualProduct, "Cart doesn't contain added product");
+        Assertions.assertTrue(amazonAddToCartPage.doesCartContainSelectedProduct(actualProductThatWasAdded), "Cart doesn't contain added product");
     }
 }

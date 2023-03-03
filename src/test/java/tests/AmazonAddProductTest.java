@@ -20,12 +20,14 @@ public class AmazonAddProductTest extends TestBase {
     @Description(value = "The test checks that when user adds an item to Cart there" +
             " is a successful message with green tick and 1 is displayed on the Cart")
     public void checkCartTest() {
+        String imageAreaWithGreenTick = "-84px -138px";
         AmazonAddToCartPage amazonAddToCartPage = new AmazonAddToCartPage(driver);
         amazonAddToCartPage.addProductThatHasAddBtn(amazonSearchPage.getListOfSearchProduct(productName));
         String actualProductAddMessage = amazonAddToCartPage.getTextFromMessage();
+        String actualImageAreaWithTick = amazonAddToCartPage.getImageAreaWithTick();
         String actualNumberOnCart = amazonAddToCartPage.numberOnCart();
         Assertions.assertEquals("Added to Cart", actualProductAddMessage);
         Assertions.assertEquals("1", actualNumberOnCart);
-        Assertions.assertTrue(amazonAddToCartPage.isTickIconGreen());
+        Assertions.assertEquals(imageAreaWithGreenTick, actualImageAreaWithTick, "The tick picture is incorrect");
     }
 }
