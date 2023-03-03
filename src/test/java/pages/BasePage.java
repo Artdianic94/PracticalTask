@@ -10,8 +10,8 @@ public class BasePage {
         this.driver = driver;
     }
 
-    @Step("Open main page {amazonUrl}")
-    public void openMainPage(String amazonUrl) {
-        driver.get(amazonUrl);
+    @Step("Open page {url}")
+    public void openPage(String url) {
+        driver.get(url);
     }
 }

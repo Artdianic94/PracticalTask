@@ -5,8 +5,6 @@ import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.*;
 
-import java.io.*;
-
 import java.util.Optional;
 
 public class AfterEachExtension implements AfterEachCallback {
@@ -17,7 +15,7 @@ public class AfterEachExtension implements AfterEachCallback {
     }
 
     @Override
-    public void afterEach(ExtensionContext context) throws IOException {
+    public void afterEach(ExtensionContext context) {
         if (context.getExecutionException().isPresent()) {
             saveUrlAndScreenShot();
         }
