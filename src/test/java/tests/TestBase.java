@@ -27,12 +27,11 @@ public class TestBase {
     @BeforeEach
     @Step("Start the application")
     public void setUp() {
-        PropertiesManager propertiesManager = new PropertiesManager();
         chromeDriverManager = new ChromeDriverManager();
         driver = chromeDriverManager.getDriver();
         AmazonAuthorizationPage amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
         amazonAuthorizationPage.openPage(WebUrls.AMAZON_URL);
-        amazonAuthorizationPage.makeLogin(propertiesManager.get("EMAIL"), propertiesManager.get("PASSWORD"));
+        amazonAuthorizationPage.makeLogin(System.getProperty("Username"), System.getProperty("Password"));
     }
 
     @BeforeEach

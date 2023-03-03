@@ -2,10 +2,12 @@ task_branch = "${TEST_BRANCH_NAME}"
 def branch_cutted = task_branch.contains("origin") ? task_branch.split('/')[1] : task_branch.trim()
 currentBuild.displayName = "$branch_cutted"
 base_git_url = "https://github.com/Artdianic94/PracticalTask.git"
-def out = new File('Credentials')
+
 
 node {
-out << 'email = ${amazon_email}  password = ${amazon_password}'
+environment {
+        AMAZON_ACCESS_KEY_ID = credentials('credentials-id')
+    }
     withEnv(["branch=${branch_cutted}", "base_url=${base_git_url}"]) {
         stage("Checkout Branch") {
             if (!"$branch_cutted".contains("master")) {
@@ -21,7 +23,7 @@ out << 'email = ${amazon_email}  password = ${amazon_password}'
         }
         try {
             stage("Test") {
-
+                bat 'echo %AMAZON_ACCESS_KEY_ID%'
                 sh './gradlew clean test'
 
             }
