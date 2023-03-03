@@ -23,7 +23,6 @@ environment {
         }
         try {
             stage("Test") {
-                bat 'echo %AMAZON_ACCESS_KEY_ID%'
                 sh './gradlew clean test'
 
             }
