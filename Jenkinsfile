@@ -5,9 +5,6 @@ base_git_url = "https://github.com/Artdianic94/PracticalTask.git"
 
 
 node {
-environment {
-        AMAZON_ACCESS_KEY_ID = credentials('credentials-id')
-    }
     withEnv(["branch=${branch_cutted}", "base_url=${base_git_url}"]) {
         stage("Checkout Branch") {
             if (!"$branch_cutted".contains("master")) {
@@ -23,6 +20,9 @@ environment {
         }
         try {
             stage("Test") {
+                environment {
+                        AMAZON_ACCESS_KEY_ID = credentials('credentials-id')
+                    }
                 sh './gradlew clean test'
 
             }
