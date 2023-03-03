@@ -20,11 +20,9 @@ node {
         }
         try {
             stage("Test") {
-                environment {
-                        AMAZON_ACCESS_KEY_ID = credentials('credentials-id')
-                    }
+                withCredentials([usernamePassword(credentialsId: 'credentials-id', usernameVariable: 'Username', passwordVariable: 'Password')]){
                 sh './gradlew clean test'
-
+             }
             }
 
         } finally {

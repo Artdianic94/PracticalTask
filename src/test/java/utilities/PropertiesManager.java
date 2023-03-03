@@ -12,7 +12,7 @@ public class PropertiesManager {
 
 
     public PropertiesManager() {
-        propertyFilePath = System.getProperty("user.dir")+"/Credentials";
+        propertyFilePath = System.getProperty("user.dir")+"/resources/credentials.properties";
     }
 
     private void loadData() {

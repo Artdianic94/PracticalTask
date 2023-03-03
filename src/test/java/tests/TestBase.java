@@ -13,7 +13,8 @@ import pages.AmazonAddToCartPage;
 import pages.AmazonAuthorizationPage;
 import staticdata.WebUrls;
 import utilities.AfterEachExtension;
-import utilities.PropertiesManager;
+
+import java.util.Properties;
 
 import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
@@ -31,7 +32,9 @@ public class TestBase {
         driver = chromeDriverManager.getDriver();
         AmazonAuthorizationPage amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
         amazonAuthorizationPage.openPage(WebUrls.AMAZON_URL);
-        amazonAuthorizationPage.makeLogin(System.getProperty("Username"), System.getProperty("Password"));
+        String email = System.getProperty("Username");
+        String password = System.getProperty("Password");
+        amazonAuthorizationPage.makeLogin(email, password);
     }
 
     @BeforeEach
