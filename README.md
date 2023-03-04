@@ -86,6 +86,8 @@ A project to automate the testing of the Amazon web application. There are 4 tes
     9.2 Configuration of global tools -> Add Gradle (add name ex."gradle jenkins" and tick install automatically) -> 
     Add Allure Commandline (add name ex."allure jenkins" and tick install automatically) -> Save
     
+    9.3 Manage Credentials -> click on System -> Add domain -> enter domain name (e.g. 'amazon') -> create ->  adding some credentials -> In "Kind" select definition 'Username with password' -> In "Username" enter your amazon email -> In "Password" enter your amazon password -> In "ID" enter 'credentials-id' -> Save
+    
   10. Create Item -> Create Name of Pipeline -> Ok
   
     10.1 Global -> Add description -> Tick "This is a parameterized build" and choose "String Parametr" -> 
