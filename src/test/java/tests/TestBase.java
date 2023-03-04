@@ -4,9 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import driver.ChromeDriverManager;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -15,12 +13,6 @@ import pages.AmazonAuthorizationPage;
 import staticdata.WebUrls;
 import utilities.AfterEachExtension;
 import utilities.PropertiesManager;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
