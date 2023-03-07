@@ -15,6 +15,6 @@ public class AmazonSearchProductsTest extends TestBase {
         AmazonSearchPage amazonSearchPage = new AmazonSearchPage(driver);
         amazonSearchPage.sendSearchingText(productName);
         boolean onlyIphoneOnPage = amazonSearchPage.isSearchedProductInEachItemOnPage(productName);
-        Assertions.assertTrue(onlyIphoneOnPage);
+        Assertions.assertTrue(onlyIphoneOnPage, "The page with the founded products is incorrect");
     }
 }
