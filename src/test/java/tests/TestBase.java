@@ -1,7 +1,9 @@
 package tests;
 
 import com.google.common.collect.ImmutableMap;
-import driver.ChromeDriverManager;
+import factorydriver.DriverFactory;
+import factorydriver.DriverManager;
+import factorydriver.DriverType;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,17 +19,33 @@ import utilities.PropertiesManager;
 import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
 public class TestBase {
-    public WebDriver driver;
-    public static ChromeDriverManager chromeDriverManager;
+    WebDriver driver;
+    DriverManager driverManager;
     @RegisterExtension
     AfterEachExtension afterEachExtension = new AfterEachExtension();
 
+    public void setUp(String browser) {
+        DriverFactory factory = new DriverFactory();
+        DriverType driverType = switch (browser) {
+            case "chrome" -> DriverType.CHROME;
+            case "firefox" -> DriverType.FIREFOX;
+            case "remote" -> DriverType.REMOTE;
+            default -> null;
+        };
+        driverManager = factory.getManager(driverType);
+        driverManager.setUpDriver();
+        driver = driverManager.getDriver();
+    }
+
+    public void startBrowser() {
+        setUp("firefox");
+    }
+
     @BeforeEach
     @Step("Start the application")
-    public void setUp() {
+    public void beforeTestActions() {
+        startBrowser();
         PropertiesManager propertiesManager = new PropertiesManager();
-        chromeDriverManager = new ChromeDriverManager();
-        driver = chromeDriverManager.getDriver();
         AmazonAuthorizationPage amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
         amazonAuthorizationPage.openPage(WebUrls.AMAZON_URL);
         String email = propertiesManager.get("Username");
@@ -58,6 +76,8 @@ public class TestBase {
             amazonAddToCartPage.cleanCart();
         } catch (NoSuchElementException ignored) {
         }
+        driver.manage().deleteAllCookies();
+        driver.navigate().refresh();
         afterEachExtension.setDriver(driver);
     }
 }

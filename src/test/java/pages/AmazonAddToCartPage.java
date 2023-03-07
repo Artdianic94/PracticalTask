@@ -14,7 +14,7 @@ public class AmazonAddToCartPage extends BasePage {
     private final By ALERT_MESSAGE_SUCCESSFUL = By.id("attachDisplayAddBaseAlert");
     private final By ANOTHER_ALERT_MESSAGE = By.xpath("//div[@id='sw-atc-details-single-container']//div[@id='NATC_SMART_WAGON_CONF_MSG_SUCCESS']");
     private final By CART_BTN = By.id("nav-cart-count");
-    private final By AMAZON_LOGO = By.id("nav-logo-sprites");
+    private final By AMAZON_LOGO = By.id("nav-logo");
     private final By CLOSE_ALERT_BTN = By.id("attach-close_sideSheet-link");
     private final By ALL_PRODUCTS_IN_CART = By.xpath("//div[@class='sc-item-content-group']//span[@class='a-truncate-full a-offscreen']");
     private final By PRODUCT_TITLE = By.id("productTitle");

@@ -5,11 +5,16 @@ import org.junit.jupiter.api.*;
 import pages.AmazonAddToCartPage;
 import pages.AmazonSearchPage;
 
+@Tag("uiTestCart")
 public class AmazonProductInCartTest extends TestBase {
     AmazonSearchPage amazonSearchPage;
     AmazonAddToCartPage amazonAddToCartPage;
     String productName = "iPhone";
     String actualProductThatWasAdded;
+
+    public void startBrowser() {
+        super.setUp("chrome");
+    }
 
     @BeforeEach
     public void loginAndOpenProduct() {

@@ -5,9 +5,14 @@ import org.junit.jupiter.api.*;
 import pages.AmazonAddToCartPage;
 import pages.AmazonSearchPage;
 
+@Tag("uiTest")
 public class AmazonAddProductTest extends TestBase {
     String productName = "iPhone";
     AmazonSearchPage amazonSearchPage;
+
+    public void startBrowser() {
+        super.setUp("remote");
+    }
 
     @BeforeEach
     public void loginAndOpenProduct() {

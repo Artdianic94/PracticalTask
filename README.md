@@ -44,7 +44,7 @@ A project to automate the testing of the Amazon web application. There are 4 tes
   --volume jenkins-data:/var/jenkins_home \
   --publish 2376:2376 \
   docker:dind \
-  --storage-driver overlay2
+  --storage-factorydriver overlay2
   
 3. Build a docker image from Dockerfile in this project and assign the image a meaningful name, e.g. "myjenkins-blueocean:2.375.3-1":
 

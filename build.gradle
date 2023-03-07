@@ -40,13 +40,27 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 }
-
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-    sourceCompatibility = 11
-    targetCompatibility = 11
+    sourceCompatibility = 14
+    targetCompatibility = 14
+}
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
+
+    maxParallelForks = 2
+
+    test {
+        useJUnitPlatform {
+            includeTags "uiTest"
+            includeTags "uiTestCart"
+        }
+    }
 }
 
-tasks.withType(Test) {
-    useJUnitPlatform()
-}
+
+
