@@ -2,7 +2,7 @@ package tests;
 
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.*;
-import pages.AmazonAddToCartPage;
+import pages.AmazonProductPage;
 import pages.AmazonSearchPage;
 
 @Tag("uiTest")
@@ -25,14 +25,10 @@ public class AmazonAddProductTest extends TestBase {
     @Description(value = "The test checks that when user adds an item to Cart there" +
             " is a successful message with green tick and 1 is displayed on the Cart")
     public void checkCartTest() {
-        String imageAreaWithGreenTick = "-84px -138px";
-        AmazonAddToCartPage amazonAddToCartPage = new AmazonAddToCartPage(driver);
-        amazonAddToCartPage.addProductThatHasAddBtn(amazonSearchPage.getListOfSearchProduct(productName));
-        String actualProductAddMessage = amazonAddToCartPage.getTextFromMessage();
-        String actualImageAreaWithTick = amazonAddToCartPage.getImageAreaWithTick();
-        String actualNumberOnCart = amazonAddToCartPage.numberOnCart();
-        Assertions.assertEquals("Added to Cart", actualProductAddMessage);
-        Assertions.assertEquals("1", actualNumberOnCart);
-        Assertions.assertEquals(imageAreaWithGreenTick, actualImageAreaWithTick, "The tick picture is incorrect");
+        AmazonProductPage amazonProductPage = new AmazonProductPage(driver);
+        amazonProductPage.addProductThatHasAddBtn(amazonSearchPage.getListOfSearchProduct(productName), productName);
+        Assertions.assertEquals("Added to Cart", amazonProductPage.getTextFromMessage(), "Error adding the product to the Cart");
+        Assertions.assertEquals("1", amazonProductPage.getNumberOnCart(), "The actual umber on the Cart is not one");
+        Assertions.assertTrue(amazonProductPage.doesTickReportAboutSuccess(), "The tick picture is incorrect");
     }
 }

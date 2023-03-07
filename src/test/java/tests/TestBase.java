@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import pages.AmazonAddToCartPage;
+import pages.AmazonProductPage;
 import pages.AmazonAuthorizationPage;
 import staticdata.WebUrls;
 import utilities.AfterEachExtension;
@@ -72,8 +72,8 @@ public class TestBase {
     @Step("Stop the application")
     public void quit() {
         try {
-            AmazonAddToCartPage amazonAddToCartPage = new AmazonAddToCartPage(driver);
-            amazonAddToCartPage.cleanCart();
+            AmazonProductPage amazonProductPage = new AmazonProductPage(driver);
+            amazonProductPage.cleanCart();
         } catch (NoSuchElementException ignored) {
         }
         driver.manage().deleteAllCookies();

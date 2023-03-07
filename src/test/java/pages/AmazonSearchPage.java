@@ -17,8 +17,8 @@ public class AmazonSearchPage extends BasePage {
     private static final Logger LOGGER = LogManager.getLogger(AmazonSearchPage.class.getName());
     private final By SEARCH_INPUT = By.id("twotabsearchtextbox");
     private final By SEARCH_BTN = By.id("nav-search-submit-button");
-    private final By IPHONE_PRODUCT = By.xpath("(//div[@class='a-section']//span[contains(text(), 'iPhone')])");
-    private List<WebElement> allIphone;
+    private List<WebElement> listOfFoundedProducts;
+    public static String foundedProductsXpath = "(//div[@class='a-section']//span[contains(text(), '%s')])";
 
     public AmazonSearchPage(WebDriver driver) {
         super(driver);
@@ -37,21 +37,21 @@ public class AmazonSearchPage extends BasePage {
         LOGGER.info(String.format("Get a list of all products found on request %s", productName));
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         LOGGER.info("Wait for a message about adding a product to the cart");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(IPHONE_PRODUCT));
-        allIphone = driver.findElements(IPHONE_PRODUCT);
-        return allIphone;
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format(foundedProductsXpath, productName))));
+        listOfFoundedProducts = driver.findElements(By.xpath(String.format(foundedProductsXpath, productName)));
+        return listOfFoundedProducts;
     }
 
     @Step("Checking if all results contain {productName}")
     public boolean isSearchedProductInEachItemOnPage(String productName) {
         int count = 0;
-        allIphone = getListOfSearchProduct(productName);
-        for (WebElement allIphone : allIphone) {
+        listOfFoundedProducts = getListOfSearchProduct(productName);
+        for (WebElement allIphone : listOfFoundedProducts) {
             if (allIphone.getText().contains(productName)) {
                 count++;
             }
         }
-        LOGGER.warn(String.format("Number of products in the list: %s.", allIphone.size()) + "Number of " + productName + "in this list: " + count);
-        return count == allIphone.size();
+        LOGGER.warn(String.format("Number of products in the list: %s.", listOfFoundedProducts.size()) + "Number of " + productName + "in this list: " + count);
+        return count == listOfFoundedProducts.size();
     }
 }
