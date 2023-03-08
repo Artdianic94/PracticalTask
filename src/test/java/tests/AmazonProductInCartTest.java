@@ -12,10 +12,6 @@ public class AmazonProductInCartTest extends TestBase {
     String productName = "iPhone";
     String actualProductThatWasAdded;
 
-    public void startBrowser() {
-        super.setUp("chrome");
-    }
-
     @BeforeEach
     public void loginAndOpenProduct() {
         amazonSearchPage = new AmazonSearchPage(driver);

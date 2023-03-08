@@ -38,7 +38,7 @@ public class TestBase {
     }
 
     public void startBrowser() {
-        setUp("firefox");
+        setUp(System.getProperty("BROWSER"));
     }
 
     @BeforeEach

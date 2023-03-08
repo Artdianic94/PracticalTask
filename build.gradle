@@ -55,6 +55,7 @@ test {
     maxParallelForks = 2
 
     test {
+        systemProperty 'BROWSER', System.getProperty('BROWSER', 'chrome')
         useJUnitPlatform {
             includeTags "uiTest"
             includeTags "uiTestCart"

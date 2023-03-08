@@ -10,10 +10,6 @@ public class AmazonAddProductTest extends TestBase {
     String productName = "iPhone";
     AmazonSearchPage amazonSearchPage;
 
-    public void startBrowser() {
-        super.setUp("remote");
-    }
-
     @BeforeEach
     public void loginAndOpenProduct() {
         amazonSearchPage = new AmazonSearchPage(driver);
