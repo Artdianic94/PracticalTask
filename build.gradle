@@ -34,19 +34,19 @@ dependencies {
             "org.junit.jupiter:junit-jupiter:$junitVersion")
     testRuntimeOnly('org.slf4j:slf4j-simple:1.7.33',
             "org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.26'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 }
-//def amazonTest = tasks.register("amazonTest", Test) {
-//    useJUnitPlatform {
-//        includeTags "Amazon"
-//    }
-//}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
     sourceCompatibility = 11
     targetCompatibility = 11
 }
+
 tasks.withType(Test) {
     useJUnitPlatform()
 }
-

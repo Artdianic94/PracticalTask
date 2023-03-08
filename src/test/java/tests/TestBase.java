@@ -5,33 +5,38 @@ import driver.ChromeDriverManager;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import pages.AmazonProductPage;
 import pages.AmazonAuthorizationPage;
 import staticdata.WebUrls;
 import utilities.AfterEachExtension;
-
+import utilities.PropertiesManager;
 
 import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
 public class TestBase {
     public WebDriver driver;
     public static ChromeDriverManager chromeDriverManager;
-    AmazonAuthorizationPage amazonAuthorizationPage;
-
     @RegisterExtension
     AfterEachExtension afterEachExtension = new AfterEachExtension();
 
     @BeforeEach
     @Step("Start the application")
     public void setUp() {
+        PropertiesManager propertiesManager = new PropertiesManager();
         chromeDriverManager = new ChromeDriverManager();
         driver = chromeDriverManager.getDriver();
-        chromeDriverManager.maximize();
-        amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
-        amazonAuthorizationPage.openMainPage();
-        amazonAuthorizationPage.makeLogin();
+        AmazonAuthorizationPage amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
+        amazonAuthorizationPage.openPage(WebUrls.AMAZON_URL);
+        String email = propertiesManager.get("Username");
+        String password = propertiesManager.get("Password");
+        if (email == null & password == null) {
+            email = System.getenv("Username");
+            password = System.getenv("Password");
+        }
+        amazonAuthorizationPage.makeLogin(email, password);
     }
 
     @BeforeEach
@@ -48,6 +53,11 @@ public class TestBase {
     @AfterEach()
     @Step("Stop the application")
     public void quit() {
+        try {
+            AmazonProductPage amazonProductPage = new AmazonProductPage(driver);
+            amazonProductPage.cleanCart();
+        } catch (NoSuchElementException ignored) {
+        }
         afterEachExtension.setDriver(driver);
     }
 }

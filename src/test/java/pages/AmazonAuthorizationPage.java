@@ -12,7 +12,7 @@ import utilities.CaptchaException;
 public class AmazonAuthorizationPage extends BasePage {
     private final By YOUR_ACCOUNT = By.xpath("//a[contains(.,'Your Account')]");
     private final By SIGN_IN_ACCOUNT_LIST = By.id("nav-link-accountList");
-    private final By SIGN_IN_BTN = By.id("nav-flyout-ya-signin");
+    private final By SIGN_IN_BTN = By.xpath("//div[@id='nav-flyout-ya-signin']//span[@class='nav-action-inner']");
     private final By EMAIL_INPUT = By.id("ap_email");
     private final By CONTINUE_BTN = By.id("continue");
     private final By PASSWORD_INPUT = By.id("ap_password");

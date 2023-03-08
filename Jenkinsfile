@@ -17,10 +17,11 @@ node {
                 echo "Current branch is master"
             }
         }
-
         try {
             stage("Test") {
+                withCredentials([usernamePassword(credentialsId: 'credentials-id', usernameVariable: 'Username', passwordVariable: 'Password')]){
                 sh './gradlew clean test'
+             }
             }
 
         } finally {
@@ -49,15 +50,7 @@ def generateAllure() {
             results          : [[path: 'build/allure-results']]
     ])
 }
-def getProject(String repo, String branch) {
-    cleanWs()
-    checkout scm: [
-            $class           : 'GitSCM', branches: [[name: branch]],
-            userRemoteConfigs: [[
-                                        url: repo
-                                ]]
-    ]
-}
+
 
 
 

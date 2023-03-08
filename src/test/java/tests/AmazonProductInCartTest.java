@@ -1,39 +1,28 @@
 package tests;
 
-
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.*;
-import pages.AmazonAddToCartPage;
-import pages.AmazonAuthorizationPage;
+import pages.AmazonProductPage;
 import pages.AmazonSearchPage;
-
 
 public class AmazonProductInCartTest extends TestBase {
     AmazonSearchPage amazonSearchPage;
-    AmazonAddToCartPage amazonAddToCartPage;
+    AmazonProductPage amazonProductPage;
     String productName = "iPhone";
+    String actualProductThatWasAdded;
 
     @BeforeEach
     public void loginAndOpenProduct() {
         amazonSearchPage = new AmazonSearchPage(driver);
-        amazonAddToCartPage = new AmazonAddToCartPage(driver);
+        amazonProductPage = new AmazonProductPage(driver);
         amazonSearchPage.sendSearchingText(productName);
-        amazonAddToCartPage.addProductToCart(productName);
-        amazonAddToCartPage.checkForAddingToCart();
+        actualProductThatWasAdded = amazonProductPage.addProductThatHasAddBtn(amazonSearchPage.getListOfSearchProduct(productName), productName);
+        amazonProductPage.getTextFromMessage();
     }
 
     @Test
-    @Description(value = "The test checks that the Cart contains the added Phone")
+    @Description(value = "The test checks that the Cart contains the added IPhone")
     public void checkProductsInCartTest() {
-        boolean actualProduct = amazonAddToCartPage.whatInCart();
-        Assertions.assertTrue(actualProduct, "Cart doesn't contain added product");
-    }
-
-    @AfterEach
-    public void cleanData() {
-        AmazonAuthorizationPage amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
-        amazonAuthorizationPage.openMainPage();
-        amazonAddToCartPage = new AmazonAddToCartPage(driver);
-        amazonAddToCartPage.cleanCart();
+        Assertions.assertTrue(amazonProductPage.doesCartContainSelectedProduct(actualProductThatWasAdded), "Cart doesn't contain added product");
     }
 }
