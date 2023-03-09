@@ -26,12 +26,20 @@ public class TestBase {
 
     public void setUp(String browser) {
         DriverFactory factory = new DriverFactory();
-        DriverType driverType = switch (browser) {
-            case "chrome" -> DriverType.CHROME;
-            case "firefox" -> DriverType.FIREFOX;
-            case "remote" -> DriverType.REMOTE;
-            default -> null;
-        };
+        DriverType driverType;
+        switch (browser) {
+            case "chrome":
+                driverType = DriverType.CHROME;
+                break;
+            case "firefox":
+                driverType = DriverType.FIREFOX;
+                break;
+            case "remote":
+                driverType = DriverType.REMOTE;
+                break;
+            default:
+                driverType = null;
+        }
         driverManager = factory.getManager(driverType);
         driverManager.setUpDriver();
         driver = driverManager.getDriver();

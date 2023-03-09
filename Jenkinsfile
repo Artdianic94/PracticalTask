@@ -17,12 +17,7 @@ node {
                 echo "Current branch is master"
             }
         }
-        stage('Install JDK') {
-                    steps {
-                        sh 'apt-get update && apt-get install -y openjdk-16-jdk'
-                        sh 'export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-16.0.1.jdk/Contents/Home'
-                    }
-                }
+
         try {
             stage("Test") {
                 withCredentials([usernamePassword(credentialsId: 'credentials-id', usernameVariable: 'Username', passwordVariable: 'Password')]){
