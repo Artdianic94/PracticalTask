@@ -17,8 +17,8 @@ node {
                 echo "Current branch is master"
             }
         }
-def remoteDriverManager = new RemoteDriverManager(browser)
         try {
+        def remoteDriverManager = new RemoteDriverManager(browser)
           stage("Test") {
               withCredentials([usernamePassword(credentialsId: 'credentials-id', usernameVariable: 'Username', passwordVariable: 'Password')]){
                   if("${BROWSER}=remote") {
