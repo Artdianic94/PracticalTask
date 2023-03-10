@@ -62,6 +62,6 @@ public class RemoteDriverManager extends DriverManager {
 
     @Override
     public void setUpDriver() {
-        selectBrowser(System.getProperty("REMOTE_BROWSER"));
+        selectBrowser(System.getenv("REMOTE_BROWSER"));
     }
 }
