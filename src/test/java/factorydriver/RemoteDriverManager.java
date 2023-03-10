@@ -13,7 +13,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class RemoteDriverManager extends DriverManager {
 
-    private static final String SELENOID_URL = "http://localhost:4444/wd/hub";
+    private static final String HUB_URL = "http://localhost:4444//wd/hub";
     private static final String SELENOID_TIMEZONE = "TZ=UTC";
     private static final boolean SELENOID_ENABLE_VIDEO = true;
 
@@ -44,17 +44,17 @@ public class RemoteDriverManager extends DriverManager {
         RemoteWebDriver driver = null;
         switch (browser) {
             case "chrome":
-                driver = new RemoteWebDriver(new URL(SELENOID_URL), getChromeOptions(capabilities));
+                driver = new RemoteWebDriver(new URL(HUB_URL), getChromeOptions(capabilities));
                 break;
             case "firefox":
-                driver = new RemoteWebDriver(new URL(SELENOID_URL), getFirefoxOptions(capabilities));
+                driver = new RemoteWebDriver(new URL(HUB_URL), getFirefoxOptions(capabilities));
                 break;
             case "opera":
                 ChromeOptions operaOptions = new ChromeOptions();
                 operaOptions.setBinary("/usr/bin/opera");
                 setSelenoidOptions(capabilities);
                 operaOptions.merge(capabilities);
-                driver = new RemoteWebDriver(new URL(SELENOID_URL), operaOptions);
+                driver = new RemoteWebDriver(new URL(HUB_URL), operaOptions);
                 break;
             default:
                 throw new RuntimeException("Unsupported browser: " + browser);
