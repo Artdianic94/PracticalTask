@@ -17,20 +17,29 @@ node {
                 echo "Current branch is master"
             }
         }
-
+def remoteDriverManager = new RemoteDriverManager(browser)
         try {
-            stage("Test") {
-                withCredentials([usernamePassword(credentialsId: 'credentials-id', usernameVariable: 'Username', passwordVariable: 'Password')]){
-               if("${BROWSER}==remote") {
-               withEnv(["REMOTE_BROWSER=${REMOTE_BROWSER}"]) {
-               sh './gradlew clean test -DBROWSER=${BROWSER}'
-               }
-               }
-               else {
-               sh './gradlew clean test -DBROWSER=${BROWSER}'
-               }
-             }
-            }
+          stage("Test") {
+              withCredentials([usernamePassword(credentialsId: 'credentials-id', usernameVariable: 'Username', passwordVariable: 'Password')]){
+                  if("${BROWSER}=remote") {
+                      withEnv(["REMOTE_BROWSER=${REMOTE_BROWSER}"]) {
+                          remoteDriverManager.setupDriver()
+                          try {
+                              sh './gradlew clean test -DBROWSER=${BROWSER}'
+                          } finally {
+                              remoteDriverManager.quitDriver()
+                          }
+                      }
+                  } else {
+                      remoteDriverManager.setupDriver()
+                      try {
+                          sh './gradlew clean test -DBROWSER=${BROWSER}'
+                      } finally {
+                          remoteDriverManager.quitDriver()
+                      }
+                  }
+              }
+          }
 
         } finally {
             stage("Allure") {
