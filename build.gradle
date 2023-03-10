@@ -55,7 +55,7 @@ test {
 
     test {
         systemProperty 'BROWSER', System.getProperty('BROWSER', 'chrome')
-        systemProperties['REMOTE_BROWSER'] = System.getenv("REMOTE_BROWSER")
+        systemProperty 'REMOTE_BROWSER', System.getProperty('REMOTE_BROWSER', 'chrome')
         useJUnitPlatform {
             includeTags "uiTest"
             includeTags "uiTestCart"
