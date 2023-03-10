@@ -55,6 +55,7 @@ test {
 
     test {
         systemProperty 'BROWSER', System.getProperty('BROWSER', 'chrome')
+        systemProperty 'REMOTE_BROWSER', System.getProperty('REMOTE_BROWSER', 'chrome')
         useJUnitPlatform {
             includeTags "uiTest"
             includeTags "uiTestCart"

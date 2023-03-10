@@ -21,7 +21,14 @@ node {
         try {
             stage("Test") {
                 withCredentials([usernamePassword(credentialsId: 'credentials-id', usernameVariable: 'Username', passwordVariable: 'Password')]){
-                sh './gradlew clean test -DBROWSER=${BROWSER}'
+               if(${BROWSER}="remote") {
+               withEnv(["REMOTE_BROWSER=${REMOTE_BROWSER}"]) {
+               sh './gradlew clean test -DBROWSER=${BROWSER}'
+               }
+               }
+               else {
+               sh './gradlew clean test -DBROWSER=${BROWSER}'
+               }
              }
             }
 
