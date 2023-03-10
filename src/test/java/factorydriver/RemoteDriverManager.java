@@ -1,67 +1,84 @@
 package factorydriver;
 
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
 public class RemoteDriverManager extends DriverManager {
 
-    private void setSelenoidOptions(DesiredCapabilities capabilities) {
-        capabilities.setCapability("selenoid:options", new HashMap<String, Object>() {{
-            put("env", new ArrayList<String>() {{
-                add("TZ=UTC");
-            }});
-            put("enableVideo", true);
+    private static final String SELENOID_URL = "http://localhost:4444/wd/hub";
+    private static final String SELENOID_TIMEZONE = "TZ=UTC";
+    private static final boolean SELENOID_ENABLE_VIDEO = true;
+
+    private static void setSelenoidOptions(DesiredCapabilities capabilities) {
+        HashMap<String, Object> selenoidOptions = new HashMap<String, Object>();
+        selenoidOptions.put("env", new ArrayList<String>() {{
+            add(SELENOID_TIMEZONE);
         }});
+        selenoidOptions.put("enableVideo", SELENOID_ENABLE_VIDEO);
+        capabilities.setCapability("selenoid:options", selenoidOptions);
     }
 
-    public void selectBrowser(String browser) {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
+    private static ChromeOptions getChromeOptions(DesiredCapabilities capabilities) {
+        ChromeOptions options = new ChromeOptions();
+        setSelenoidOptions(capabilities);
+        options.merge(capabilities);
+        return options;
+    }
+
+    private static FirefoxOptions getFirefoxOptions(DesiredCapabilities capabilities) {
+        FirefoxOptions options = new FirefoxOptions();
+        setSelenoidOptions(capabilities);
+        options.merge(capabilities);
+        return options;
+    }
+
+    private static RemoteWebDriver createRemoteWebDriver(String browser, DesiredCapabilities capabilities) throws MalformedURLException {
+        RemoteWebDriver driver = null;
         switch (browser) {
             case "chrome":
-                ChromeOptions chromeOptions = new ChromeOptions();
-                setSelenoidOptions(capabilities);
-                chromeOptions.merge(capabilities);
-                try {
-                    driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), chromeOptions);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+                driver = new RemoteWebDriver(new URL(SELENOID_URL), getChromeOptions(capabilities));
                 break;
             case "firefox":
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                setSelenoidOptions(capabilities);
-                firefoxOptions.merge(capabilities);
-                try {
-                    driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), firefoxOptions);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+                driver = new RemoteWebDriver(new URL(SELENOID_URL), getFirefoxOptions(capabilities));
                 break;
             case "opera":
                 ChromeOptions operaOptions = new ChromeOptions();
                 operaOptions.setBinary("/usr/bin/opera");
                 setSelenoidOptions(capabilities);
                 operaOptions.merge(capabilities);
-                try {
-                    driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), operaOptions);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+                driver = new RemoteWebDriver(new URL(SELENOID_URL), operaOptions);
                 break;
             default:
                 throw new RuntimeException("Unsupported browser: " + browser);
         }
+        return driver;
+    }
+
+    public void selectBrowser(String browser) throws MalformedURLException {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("platform", Platform.LINUX);
+        capabilities.setCapability("version", "latest");
+        driver = createRemoteWebDriver(browser, capabilities);
     }
 
     @Override
     public void setUpDriver() {
-        selectBrowser(System.getProperty("REMOTE_BROWSER"));
+        String remoteBrowser = System.getProperty("REMOTE_BROWSER");
+        if (remoteBrowser == null || remoteBrowser.isEmpty()) {
+            throw new RuntimeException("Remote browser not specified");
+        }
+        try {
+            selectBrowser(remoteBrowser);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 }
