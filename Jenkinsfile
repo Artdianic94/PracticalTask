@@ -19,7 +19,7 @@ node {
         try {
           stage("Test") {
               withCredentials([usernamePassword(credentialsId: 'credentials-id', usernameVariable: 'Username', passwordVariable: 'Password')]){
-              sh './gradlew clean test -DBROWSER=${BROWSER}'
+              sh './gradlew clean test'
               }
           }
         } finally {
