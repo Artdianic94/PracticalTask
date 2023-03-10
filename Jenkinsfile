@@ -2,7 +2,7 @@ task_branch = "${TEST_BRANCH_NAME}"
 def branch_cutted = task_branch.contains("origin") ? task_branch.split('/')[1] : task_branch.trim()
 currentBuild.displayName = "$branch_cutted"
 base_git_url = "https://github.com/Artdianic94/PracticalTask.git"
-
+def remoteDriverManager = new RemoteDriverManager(browser)
 node {
     withEnv(["branch=${branch_cutted}", "base_url=${base_git_url}"]) {
         stage("Checkout Branch") {
@@ -18,7 +18,6 @@ node {
             }
         }
         try {
-        def remoteDriverManager = new RemoteDriverManager(browser)
           stage("Test") {
               withCredentials([usernamePassword(credentialsId: 'credentials-id', usernameVariable: 'Username', passwordVariable: 'Password')]){
                   if("${BROWSER}=remote") {
