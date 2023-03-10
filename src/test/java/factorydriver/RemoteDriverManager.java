@@ -21,8 +21,7 @@ public class RemoteDriverManager extends DriverManager {
         }});
     }
 
-    public void selectBrowser() {
-        String browser = System.getenv("REMOTE_BROWSER");
+    public void selectBrowser(String browser) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         switch (browser) {
             case "chrome":
@@ -63,6 +62,6 @@ public class RemoteDriverManager extends DriverManager {
 
     @Override
     public void setUpDriver() {
-        selectBrowser();
+        selectBrowser(System.getProperty("REMOTE_BROWSER"));
     }
 }
