@@ -1,4 +1,4 @@
-import com.example.RemoteDriverManager
+import factorydriver.RemoteDriverManager
 task_branch = "${TEST_BRANCH_NAME}"
 def branch_cutted = task_branch.contains("origin") ? task_branch.split('/')[1] : task_branch.trim()
 currentBuild.displayName = "$branch_cutted"
