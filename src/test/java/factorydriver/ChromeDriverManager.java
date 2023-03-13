@@ -14,6 +14,7 @@ public class ChromeDriverManager extends DriverManager {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--no-sandbox");
         options.addArguments("window-size=1920,1080");
+        options.addArguments("--remote-allow-origins=*");
         driver = new ChromeDriver(options);
     }
 }

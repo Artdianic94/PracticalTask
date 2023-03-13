@@ -14,6 +14,7 @@ public class FirefoxDriverManager extends DriverManager {
         options.addArguments("--disable-notifications");
         options.addArguments("--no-sandbox");
         options.addArguments("window-size=1920,1080");
+        options.addArguments("--remote-allow-origins=*");
         driver = new FirefoxDriver(options);
     }
 }

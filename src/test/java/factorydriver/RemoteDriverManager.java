@@ -1,84 +1,70 @@
 package factorydriver;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.openqa.selenium.Platform;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import com.google.common.collect.ImmutableMap;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class RemoteDriverManager extends DriverManager {
 
-    private static final String HUB_URL = "http://localhost:4444//wd/hub";
-    private static final String SELENOID_TIMEZONE = "TZ=UTC";
-    private static final boolean SELENOID_ENABLE_VIDEO = true;
-
-    private static void setSelenoidOptions(DesiredCapabilities capabilities) {
-        HashMap<String, Object> selenoidOptions = new HashMap<String, Object>();
-        selenoidOptions.put("env", new ArrayList<String>() {{
-            add(SELENOID_TIMEZONE);
-        }});
-        selenoidOptions.put("enableVideo", SELENOID_ENABLE_VIDEO);
-        capabilities.setCapability("selenoid:options", selenoidOptions);
-    }
-
-    private static ChromeOptions getChromeOptions(DesiredCapabilities capabilities) {
-        ChromeOptions options = new ChromeOptions();
-        setSelenoidOptions(capabilities);
-        options.merge(capabilities);
-        return options;
-    }
-
-    private static FirefoxOptions getFirefoxOptions(DesiredCapabilities capabilities) {
-        FirefoxOptions options = new FirefoxOptions();
-        setSelenoidOptions(capabilities);
-        options.merge(capabilities);
-        return options;
-    }
-
-    private static RemoteWebDriver createRemoteWebDriver(String browser, DesiredCapabilities capabilities) throws MalformedURLException {
-        RemoteWebDriver driver = null;
-        switch (browser) {
-            case "chrome":
-                driver = new RemoteWebDriver(new URL(HUB_URL), getChromeOptions(capabilities));
-                break;
-            case "firefox":
-                driver = new RemoteWebDriver(new URL(HUB_URL), getFirefoxOptions(capabilities));
-                break;
-            case "opera":
-                ChromeOptions operaOptions = new ChromeOptions();
-                operaOptions.setBinary("/usr/bin/opera");
-                setSelenoidOptions(capabilities);
-                operaOptions.merge(capabilities);
-                driver = new RemoteWebDriver(new URL(HUB_URL), operaOptions);
-                break;
-            default:
-                throw new RuntimeException("Unsupported browser: " + browser);
-        }
-        return driver;
-    }
-
-    public void selectBrowser(String browser) throws MalformedURLException {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("platform", Platform.LINUX);
-        capabilities.setCapability("version", "latest");
-        driver = createRemoteWebDriver(browser, capabilities);
-    }
+    private static final String HUB_URL = "http://selenoid:4444/wd/hub";
 
     @Override
-    public void setUpDriver() {
+    public void setUpDriver(){
         String remoteBrowser = System.getProperty("REMOTE_BROWSER");
-        if (remoteBrowser == null || remoteBrowser.isEmpty()) {
-            throw new RuntimeException("Remote browser not specified");
+        if (remoteBrowser == null) {
+            throw new IllegalArgumentException("Remote browser is not specified!");
         }
-        try {
-            selectBrowser(remoteBrowser);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("enableVNC", true);
+        capabilities.setCapability("enableVideo", true);
+
+        switch (remoteBrowser.toLowerCase()) {
+            case "chrome":
+                capabilities.setBrowserName("chrome");
+                capabilities.setCapability("version", "latest");
+                capabilities.setCapability("selenoid:options", ImmutableMap.of(
+                        "enableVNC", true,
+                        "enableVideo", true
+                ));
+                try {
+                    driver = new RemoteWebDriver(new URL(HUB_URL), capabilities);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "firefox":
+                capabilities.setBrowserName("firefox");
+                capabilities.setCapability("version", "latest");
+                capabilities.setCapability("selenoid:options", ImmutableMap.of(
+                        "enableVNC", true,
+                        "enableVideo", true
+                ));
+                try {
+                    driver = new RemoteWebDriver(new URL(HUB_URL), capabilities);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "opera":
+                capabilities.setBrowserName("opera");
+                capabilities.setCapability("version", "latest");
+                capabilities.setCapability("operaOptions", ImmutableMap.of("binary", "/usr/bin/opera"));
+                capabilities.setCapability("selenoid:options", ImmutableMap.of(
+                        "enableVNC", true,
+                        "enableVideo", true
+                ));
+                try {
+                    driver = new RemoteWebDriver(new URL(HUB_URL), capabilities);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid remote browser specified: " + remoteBrowser);
         }
     }
 }

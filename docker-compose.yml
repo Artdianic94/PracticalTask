@@ -7,6 +7,7 @@ services:
       - "8091:8080"
     volumes:
       - jenkins-data:/var/jenkins_home
+    container_name: jenkins
     networks:
       - network
 
@@ -18,19 +19,22 @@ services:
       - ./config:/etc/selenoid/
     environment:
       - OVERRIDE_VIDEO_OUTPUT_DIR=${PWD}/videos/
-    command: ["-limit", "1", "-session-attempt-timeout", "120s"]
+    command: [ "-limit", "1", "-session-attempt-timeout", "120s" ]
     ports:
       - "4444:4444"
+    container_name: selenoid
     networks:
       - network
+
 
   selenoid-ui:
     image: aerokube/selenoid-ui
     ports:
       - "8082:8080"
-    command: ["--selenoid-uri", "http://selenoid:4444"]
+    command: [ "--selenoid-uri", "http://selenoid:4444" ]
     networks:
       - network
+    container_name: selenoid-ui
 
   firefox:
     image: "selenoid/firefox:latest"
@@ -39,8 +43,10 @@ services:
       - "SCREEN_RESOLUTION=1920x1080x24"
     volumes:
       - /dev/shm:/dev/shm
+    command: ["--listen", "0.0.0.0:4444", "--selenoid-uri", "http://selenoid:4444/wd/hub"]
     networks:
       - network
+    container_name: firefox
 
   opera:
     image: "selenoid/opera:latest"
@@ -49,8 +55,22 @@ services:
       - "SCREEN_RESOLUTION=1920x1080x24"
     volumes:
       - /dev/shm:/dev/shm
+    command: ["--listen", "0.0.0.0:4444", "--selenoid-uri", "http://selenoid:4444/wd/hub"]
     networks:
       - network
+    container_name: opera
+
+  chrome:
+    image: "selenoid/chrome:latest"
+    environment:
+      - "ENABLE_VNC=true"
+      - "SCREEN_RESOLUTION=1920x1080x24"
+    volumes:
+      - /dev/shm:/dev/shm
+    command: ["--listen", "0.0.0.0:4444", "--selenoid-uri", "http://selenoid:4444/wd/hub"]
+    networks:
+      - network
+    container_name: chrome
 
 volumes:
   jenkins-data:
