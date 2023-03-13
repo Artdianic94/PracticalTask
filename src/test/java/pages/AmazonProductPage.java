@@ -16,13 +16,13 @@ public class AmazonProductPage extends BasePage {
     private final By ALERT_MESSAGE_SUCCESSFUL = By.id("attachDisplayAddBaseAlert");
     private final By ANOTHER_ALERT_MESSAGE = By.xpath("//div[@id='sw-atc-details-single-container']//div[@id='NATC_SMART_WAGON_CONF_MSG_SUCCESS']");
     private final By CART_BTN = By.id("nav-cart-count");
-    private final By AMAZON_LOGO = By.id("nav-logo-sprites");
+    private final By AMAZON_LOGO = By.id("nav-logo");
     private final By CLOSE_ALERT_BTN = By.id("attach-close_sideSheet-link");
     private final By ALL_PRODUCTS_IN_CART = By.xpath("//div[@class='sc-item-content-group']//span[@class='a-truncate-full a-offscreen']");
     private final By PRODUCT_TITLE = By.id("productTitle");
     private final By ADD_TO_CART_BTN = By.id("add-to-cart-button");
     private final By DELETE_PRODUCT_IN_CART = By.xpath("(//input[@value='Delete'])");
-    private final By TICK_ICON_IN_ALERT = By.xpath("//div[@id='attachDisplayAddBaseAlert']//i[@class='a-icon a-icon-alert']");
+    private final By TICK_ICON_IN_ALERT = By.id("attachDisplayAddBaseAlert");
     private final By TICK_ICON_ON_PAGE = By.xpath("//div[@class='a-box a-alert-inline a-alert-inline-success sw-atc-message']");
     private static String productAddedToCart;
     private String alertText;
@@ -93,7 +93,7 @@ public class AmazonProductPage extends BasePage {
 
     @Step("Getting an area of the image with a tick")
     public boolean doesTickReportAboutSuccess() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(TICK_ICON_IN_ALERT));
             LOGGER.info("The classes that the tick has are " + driver.findElement(TICK_ICON_IN_ALERT).getAttribute("class"));

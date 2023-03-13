@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import pages.AmazonProductPage;
 import pages.AmazonSearchPage;
 
+@Tag("uiTestCart")
 public class AmazonProductInCartTest extends TestBase {
     AmazonSearchPage amazonSearchPage;
     AmazonProductPage amazonProductPage;

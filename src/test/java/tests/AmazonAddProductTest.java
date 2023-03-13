@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import pages.AmazonProductPage;
 import pages.AmazonSearchPage;
 
+@Tag("uiTest")
 public class AmazonAddProductTest extends TestBase {
     String productName = "iPhone";
     AmazonSearchPage amazonSearchPage;
@@ -23,7 +24,7 @@ public class AmazonAddProductTest extends TestBase {
         AmazonProductPage amazonProductPage = new AmazonProductPage(driver);
         amazonProductPage.addProductThatHasAddBtn(amazonSearchPage.getListOfSearchProduct(productName), productName);
         Assertions.assertEquals("Added to Cart", amazonProductPage.getTextFromMessage(), "Error adding the product to the Cart");
-        Assertions.assertEquals("1", amazonProductPage.getNumberOnCart(), "The actual umber on the Cart is not one");
         Assertions.assertTrue(amazonProductPage.doesTickReportAboutSuccess(), "The tick picture is incorrect");
+        Assertions.assertEquals("1", amazonProductPage.getNumberOnCart(), "The actual umber on the Cart is not one");
     }
 }
