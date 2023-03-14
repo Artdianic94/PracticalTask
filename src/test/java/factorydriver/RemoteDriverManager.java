@@ -19,8 +19,6 @@ public class RemoteDriverManager extends DriverManager {
         }
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("enableVNC", true);
-        capabilities.setCapability("enableVideo", true);
 
         switch (remoteBrowser.toLowerCase()) {
             case "chrome":

@@ -1,80 +1,78 @@
-version: '3'
-
+version: "3.9"
 services:
-  jenkins:
+  myjenkins:
     image: jenkins/jenkins:lts
     ports:
-      - "8091:8080"
-    volumes:
-      - jenkins-data:/var/jenkins_home
-    container_name: jenkins
+      - "8090:8080"
     networks:
       - network
+    container_name: jenkins
 
   selenoid:
-    image: "aerokube/selenoid:latest-release"
+    image: aerokube/selenoid:latest-release
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - selenoid-video:/opt/selenoid/video
-      - ./config:/etc/selenoid/
-    environment:
-      - OVERRIDE_VIDEO_OUTPUT_DIR=${PWD}/videos/
-    command: [ "-limit", "1", "-session-attempt-timeout", "120s" ]
+      - /Users/da/IdeaProjects/PracticalTask/config:/etc/selenoid/
+    command: ["-conf", "/etc/selenoid/browsers.json"]
     ports:
       - "4444:4444"
-    container_name: selenoid
     networks:
       - network
-
+    container_name: selenoid
 
   selenoid-ui:
-    image: aerokube/selenoid-ui
+    image: aerokube/selenoid-ui:1.10.9
     ports:
       - "8082:8080"
-    command: [ "--selenoid-uri", "http://selenoid:4444" ]
+    environment:
+      - "SELENOID_URI=http://selenoid:4444"
     networks:
       - network
     container_name: selenoid-ui
 
-  firefox:
-    image: "selenoid/firefox:latest"
-    environment:
-      - "ENABLE_VNC=true"
-      - "SCREEN_RESOLUTION=1920x1080x24"
-    volumes:
-      - /dev/shm:/dev/shm
-    command: ["--listen", "0.0.0.0:4444", "--selenoid-uri", "http://selenoid:4444/wd/hub"]
+  selenoid-opera:
+    image: selenoid/opera:latest
     networks:
       - network
-    container_name: firefox
+    container_name: selenoid-opera
 
-  opera:
-    image: "selenoid/opera:latest"
-    environment:
-      - "ENABLE_VNC=true"
-      - "SCREEN_RESOLUTION=1920x1080x24"
-    volumes:
-      - /dev/shm:/dev/shm
-    command: ["--listen", "0.0.0.0:4444", "--selenoid-uri", "http://selenoid:4444/wd/hub"]
+  selenoid-chrome:
+    image: selenoid/chrome:latest
     networks:
       - network
-    container_name: opera
-
-  chrome:
-    image: "selenoid/chrome:latest"
-    environment:
-      - "ENABLE_VNC=true"
-      - "SCREEN_RESOLUTION=1920x1080x24"
+    container_name: selenoid-chrome
     volumes:
-      - /dev/shm:/dev/shm
-    command: ["--listen", "0.0.0.0:4444", "--selenoid-uri", "http://selenoid:4444/wd/hub"]
+      - "/tmp/video:/opt/selenoid/video"
+    environment:
+      - "OVERRIDE_VIDEO_OUTPUT_DIR=/opt/selenoid/video"
+      - "ENABLE_VIDEO=true"
+      - "VIDEO_NAME=${BROWSER}_${TEST_NAME}_${BUILD_NAME}.mp4"
+
+  selenoid-firefox:
+    image: selenoid/firefox:latest
     networks:
       - network
-    container_name: chrome
+    container_name: selenoid-firefox
+    volumes:
+      - "/tmp/video:/opt/selenoid/video"
+    environment:
+      - "OVERRIDE_VIDEO_OUTPUT_DIR=/opt/selenoid/video"
+      - "ENABLE_VIDEO=true"
 
-volumes:
-  jenkins-data:
-  selenoid-video:
+  selenoid-video-recorder:
+    image: selenoid/video-recorder:latest-release
+    networks:
+      - network
+    container_name: selenoid-video-recorder
+    volumes:
+      - "/tmp/video:/opt/selenoid/video"
+    environment:
+      - "S3_ENABLED=false"
+      - "OUTPUT_DIR=/opt/selenoid/video"
+      - "CLEANUP_SECS=3600"
+      - "FRAME_SIZE=1280x720"
+      - "FRAME_RATE=25"
+      - "VIDEO_CODEC=libx264"
 
 networks:
   network:
