@@ -18,9 +18,14 @@ node {
         }
         try {
           stage("Test") {
-              withCredentials([usernamePassword(credentialsId: 'credentials-id', usernameVariable: 'Username', passwordVariable: 'Password')]){
-              sh './gradlew clean test -DBROWSER=${BROWSER} -DREMOTE_BROWSER=${DREMOTE_BROWSER}'
+            withCredentials([usernamePassword(credentialsId: 'credentials-id', usernameVariable: 'Username', passwordVariable: 'Password')]) {
+              if (params.BROWSER == "remote") {
+                def REMOTE_BROWSER = params.REMOTE_BROWSER
+                sh "./gradlew clean test -DBROWSER=${params.BROWSER} -DREMOTE_BROWSER=${REMOTE_BROWSER}"
+              } else {
+                sh "./gradlew clean test -DBROWSER=${params.BROWSER} -DREMOTE_BROWSER=${DREMOTE_BROWSER}"
               }
+            }
           }
         } finally {
             stage("Allure") {

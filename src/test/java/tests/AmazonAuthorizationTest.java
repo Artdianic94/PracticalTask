@@ -9,9 +9,7 @@ import utilities.CaptchaException;
 
 @Tag("uiTest")
 public class AmazonAuthorizationTest extends TestBase {
-    public void startBrowser() {
-        setUp("remote");
-    }
+
     @Test
     @Description(value = "The test checks for a greeting on the page for an authorized user")
     public void authorizationTest() throws CaptchaException {

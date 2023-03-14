@@ -12,8 +12,11 @@ public class RemoteDriverManager extends DriverManager {
     private static final String HUB_URL = "http://selenoid:4444/wd/hub";
 
     @Override
-    public void setUpDriver(){
-        String remoteBrowser = System.getProperty("REMOTE_BROWSER");
+    public void setUpDriver() {
+        selectBrowser(System.getProperty("REMOTE_BROWSER"));
+    }
+
+    public void selectBrowser(String remoteBrowser) {
         if (remoteBrowser == null) {
             throw new IllegalArgumentException("Remote browser is not specified!");
         }
