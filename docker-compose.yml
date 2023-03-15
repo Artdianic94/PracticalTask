@@ -6,7 +6,7 @@ services:
     ports:
       - "8090:8080"
     networks:
-      - network
+      - selenoid
     container_name: jenkins
     volumes:
       - jenkins_home:/var/jenkins_home
@@ -22,23 +22,27 @@ services:
     image: docker:dind
     privileged: true
     networks:
-      - network
+      - selenoid
     container_name: docker
     volumes:
       - jenkins_home:/var/jenkins_home
     restart: always
 
   selenoid:
-    image: aerokube/selenoid:latest-release
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /Users/da/IdeaProjects/PracticalTask/config:/etc/selenoid/
-    command: ["-conf", "/etc/selenoid/browsers.json"]
+    image: "aerokube/selenoid:latest"
+    container_name: selenoid
     ports:
       - "4444:4444"
     networks:
-      - network
-    container_name: selenoid
+      - selenoid
+    volumes:
+      - "./config:/etc/selenoid"
+      - "./target:/output"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./target:/opt/selenoid/video"
+    environment:
+      - "OVERRIDE_VIDEO_OUTPUT_DIR=$PWD/target"
+    command: [ "-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video", "-container-network", "selenoid" ]
 
   selenoid-ui:
     image: aerokube/selenoid-ui:1.10.9
@@ -46,20 +50,13 @@ services:
       - "8082:8080"
     command: [ "--selenoid-uri", "http://selenoid:4444" ]
     networks:
-      - network
+      - selenoid
     container_name: selenoid-ui
-
-
-  selenoid-opera:
-    image: selenoid/opera:latest
-    networks:
-      - network
-    container_name: selenoid-opera
 
   selenoid-chrome:
     image: selenoid/chrome:latest
     networks:
-      - network
+      - selenoid
     container_name: selenoid-chrome
     volumes:
       - "/tmp/video:/opt/selenoid/video"
@@ -67,35 +64,28 @@ services:
       - "OVERRIDE_VIDEO_OUTPUT_DIR=/opt/selenoid/video"
       - "ENABLE_VIDEO=true"
       - "VIDEO_NAME=${BROWSER}_${TEST_NAME}_${BUILD_NAME}.mp4"
+    depends_on:
+      - selenoid
+      - selenoid-ui
 
   selenoid-firefox:
-    image: selenoid/firefox:latest
+    image: selenoid/firefox:110.0
     networks:
-      - network
+      - selenoid
     container_name: selenoid-firefox
     volumes:
       - "/tmp/video:/opt/selenoid/video"
     environment:
       - "OVERRIDE_VIDEO_OUTPUT_DIR=/opt/selenoid/video"
       - "ENABLE_VIDEO=true"
-
-  selenoid-video-recorder:
-    image: selenoid/video-recorder:latest-release
-    networks:
-      - network
-    container_name: selenoid-video-recorder
-    volumes:
-      - "/tmp/video:/opt/selenoid/video"
-    environment:
-      - "S3_ENABLED=false"
-      - "OUTPUT_DIR=/opt/selenoid/video"
-      - "CLEANUP_SECS=3600"
-      - "FRAME_SIZE=1280x720"
-      - "FRAME_RATE=25"
-      - "VIDEO_CODEC=libx264"
-
+      - "VIDEO_NAME=${BROWSER}_${TEST_NAME}_${BUILD_NAME}.mp4"
+    depends_on:
+      - selenoid
+      - selenoid-ui
 networks:
-  network:
+  selenoid:
+    external:
+      name: selenoid
 
 volumes:
   jenkins_home:

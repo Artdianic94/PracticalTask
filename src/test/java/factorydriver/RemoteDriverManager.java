@@ -39,21 +39,7 @@ public class RemoteDriverManager extends DriverManager {
                 break;
             case "firefox":
                 capabilities.setBrowserName("firefox");
-                capabilities.setCapability("version", "latest");
-                capabilities.setCapability("selenoid:options", ImmutableMap.of(
-                        "enableVNC", true,
-                        "enableVideo", true
-                ));
-                try {
-                    driver = new RemoteWebDriver(new URL(HUB_URL), capabilities);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "opera":
-                capabilities.setBrowserName("opera");
-                capabilities.setCapability("version", "latest");
-                capabilities.setCapability("operaOptions", ImmutableMap.of("binary", "/usr/bin/opera"));
+                capabilities.setCapability("version", "110.0");
                 capabilities.setCapability("selenoid:options", ImmutableMap.of(
                         "enableVNC", true,
                         "enableVideo", true
