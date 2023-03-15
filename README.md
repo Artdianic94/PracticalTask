@@ -19,16 +19,17 @@ A project to automate the testing of the Amazon web application. There are 4 tes
   <img src="https://github.com/devicons/devicon/blob/master/icons/jenkins/jenkins-original.svg" title="Jenkins" alt="Jenkins" width="40" height="40"/>&nbsp
 </div>
 
-+ In this project, autotests are written in Java using Selenium for UI tests.
-+ JUnit 5 is used as a library for unit testing.
-+ Gradle is used for automated project assembly.
-+ Allure Report generates a report on the launch of tests.
-+ Jenkins CI runs locally in the docker container, which runs tests.
+   
++ In this project, autotests are written in Java using Selenium for UI tests, with JUnit 5 as the unit testing library.
++ Gradle is used as the automated project management tool.
++ The Allure Report generates a report on test launches.
++ This project can be launched in a Docker network that connects containers with Jenkins,
+  Selenoid, Selenoid UI, Selenoid/chrome, and Selenoid/firefox.
 ## Running tests in Jenkins, which is installed in a Docker container
 #### Docker application should be installed on your local machine
 1. Create a bridge network in Docker using the following docker network create command:
 
->docker network create jenkins
+> docker network create jenkins
 
 2. In order to execute Docker commands inside Jenkins nodes, download docker:dind using the following docker command:
 
