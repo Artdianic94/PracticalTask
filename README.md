@@ -30,71 +30,77 @@ A project to automate the testing of the Amazon web application. There are 4 tes
 
 >docker network create jenkins
 
-2. In order to execute Docker commands inside Jenkins nodes, download and run the docker:dind Docker image using the following docker run command:
+2. In order to execute Docker commands inside Jenkins nodes, download docker:dind using the following docker command:
 
-> docker run \
-  --name jenkins-docker \
-  --rm \
-  --detach \
-  --privileged \
-  --network jenkins \
-  --network-alias docker \
-  --env DOCKER_TLS_CERTDIR=/certs \
-  --volume jenkins-docker-certs:/certs/client \
-  --volume jenkins-data:/var/jenkins_home \
-  --publish 2376:2376 \
-  docker:dind \
-  --storage-driver overlay2
+> docker pull docker:dind
   
 3. Build a docker image from Dockerfile in this project and assign the image a meaningful name, e.g. "myjenkins-blueocean:2.375.3-1":
 
 > docker build -t myjenkins-blueocean:2.375.3-1 . 
-
-4. Run myjenkins-blueocean:2.375.3-1 image as a container in Docker using the following docker run command:
-
-  > docker run \
-  --name jenkins-blueocean \
-  --restart=on-failure \
-  --detach \
-  --network jenkins \
-  --env DOCKER_HOST=tcp://docker:2376 \
-  --env DOCKER_CERT_PATH=/certs/client \
-  --env DOCKER_TLS_VERIFY=1 \
-  --publish 8080:8080 \
-  --publish 50000:50000 \
-  --volume jenkins-data:/var/jenkins_home \
-  --volume jenkins-docker-certs:/certs/client:ro \
-  myjenkins-blueocean:2.375.3-1 
   
-  5. Open http://localhost:8080
-  6. Unlock your Jenkins:
+  4. Next step is to download the Selenoid image, Selenoid-UI image (optionally) and Selenoid images for browsers.You should follow 
+  
+  the instructions below:
     
-    6.1 to get the password, open the terminal of the container "jenkins-docker docker:dind" and run the query:
+     > docker pull aerokube/selenoid:latest
+     
+     > docker pull aerokube/selenoid-ui:latest
+     
+     > docker pull selenoid/chrome
+     
+     > docker pull selenoid/firefox
+     
+  5. To create a container network, execute the following command in the folder with the Practical Task project:
+  
+     > docker-compose up -d  
+  
+  6. Open http://localhost:8090
+  
+  7. Unlock your Jenkins:
+    
+    7.1 to get the password, open the terminal of the container "jenkins-docker docker:dind" and run the query:
    
    > cat /var/jenkins_home/secrets/initialAdminPassword
    
-    6.2 copy the password and paste it into the field
+    7.2 copy the password and paste it into the field
   
-  7. Install suggested plugins
+  8. Install suggested plugins
   
-  8. Create admin login & password
+  9. Create admin login & password
   
-  9.Configure Jenkins:
+  10. Configure Jenkins:
   
-    9.1 Managing Plugins -> Available -> Enter "Allure" (tick) -> Enter "labelled" (tick) -> Install without restart
+    10.1 Managing Plugins -> Available -> Enter "Allure" (tick) -> Enter "labelled" (tick) -> Install without restart
     
-    9.2 Configuration of global tools -> Add Gradle (add name ex."gradle jenkins" and tick install automatically) -> 
+    10.2 Configuration of global tools -> Add Gradle (add name ex."gradle jenkins" and tick install automatically) -> 
     Add Allure Commandline (add name ex."allure jenkins" and tick install automatically) -> Save
     
-    9.3 Manage Credentials -> click on System -> Add domain -> enter domain name (e.g. 'amazon') -> create ->  adding some credentials -> In "Kind" select definition 'Username with password' -> In "Username" enter your amazon email -> In "Password" enter your amazon password -> In "ID" enter 'credentials-id' -> Save
+    10.3 Manage Credentials -> click on System -> Add domain -> enter domain name (e.g. 'amazon') -> create -> 
+    adding some credentials -> In "Kind" select definition 'Username with password' -> In "Username" enter your
+    amazon email -> In "Password" enter your amazon password -> In "ID" enter 'credentials-id' -> Save
     
-  10. Create Item -> Create Name of Pipeline -> Ok
+  11. Create Item -> Create Name of Pipeline -> Ok
   
-    10.1 Global -> Add description -> Tick "This is a parameterized build" and choose "String Parametr" -> 
-    Add Name: TEST_BRANCH_NAME -> Enter Default value: master -> In the "Pipeline" section, select definition 'Pipeline script
-    from SCM' -> In "SCM" select definition 'GIT' -> Enter 'https://github.com/Artdianic94/PracticalTask.git' in "Repository URL" ->
-    Enter 'jenkins.groovy' in "Script Path" -> Save
+    11.1 Global -> Add description -> Tick "This is a parameterized build"-> Add parameter -> choose "String Parameter" -> 
+    Add Name: TEST_BRANCH_NAME -> Enter Default value: master -> Add parameter -> choose "String Parameter" -> 
+    Add Name: BROWSER -> Add parameter -> choose "String Parameter" -> 
+    Add Name: REMOTE_BROWSER -> Add parameter -> choose "String Parameter" -> 
+    Add Name: maxParallelForks -> In the "Pipeline" section, select definition
+    'Pipeline script from SCM' -> In "SCM" select definition 'GIT' ->
+    Enter 'https://github.com/Artdianic94/PracticalTask.git' in "Repository URL" -> In the section
+    "Branches to build" field "Branch Specifier (blank for 'any')" enter ${TEST_BRANCH_NAME} -> Enter 'Jenkinsfile' in "Script Path"
+    -> Save
   
-  11. Build now
+  12. Build with parameters:
+      
+      12.1 In the 'TEST_BRANCH_NAME' field, you can enter any branch that exists in the project on GitHub.
+      
+      12.2 In the 'BROWSER' field, you can enter a browser name. It can be 'chrome', 'firefox', or 'remote'.
+      If you choose 'remote', then in the 'REMOTE_BROWSER' field, you can enter a remote browser name. 
+      It can be 'chrome' or 'firefox'.
+      
+      12.3 In the 'maxParallelForks' field, you can enter a number of threads.
+      
+  13. Build
 
     
