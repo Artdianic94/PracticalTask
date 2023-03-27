@@ -17,7 +17,8 @@ public class DriverFactory {
                 driverManager = new RemoteDriverManager();
                 break;
             default:
-                throw new IllegalStateException("Unexpected driver type: " + type);
+                driverManager = null;
+                break;
         }
         return driverManager;
     }
