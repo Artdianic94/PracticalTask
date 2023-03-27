@@ -24,7 +24,7 @@ public class TestBase {
     @RegisterExtension
     AfterEachExtension afterEachExtension = new AfterEachExtension();
 
-    public void setUp(String browser) {
+    private void setUp(String browser) {
         DriverFactory factory = new DriverFactory();
         DriverType driverType;
         switch (browser) {
@@ -38,21 +38,17 @@ public class TestBase {
                 driverType = DriverType.REMOTE;
                 break;
             default:
-                driverType = null;
+                throw new UnsupportedOperationException("driver is not supported");
         }
         driverManager = factory.getManager(driverType);
         driverManager.setUpDriver();
         driver = driverManager.getDriver();
     }
 
-    public void startBrowser() {
-        setUp(System.getProperty("BROWSER"));
-    }
-
     @BeforeEach
     @Step("Start the application")
     public void beforeTestActions() {
-        startBrowser();
+        setUp(System.getProperty("BROWSER"));
         PropertiesManager propertiesManager = new PropertiesManager();
         AmazonAuthorizationPage amazonAuthorizationPage = new AmazonAuthorizationPage(driver);
         amazonAuthorizationPage.openPage(WebUrls.AMAZON_URL);
