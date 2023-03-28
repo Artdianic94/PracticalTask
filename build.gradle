@@ -26,8 +26,9 @@ dependencies {
     implementation group: 'com.github.automatedowl', name: 'allure-environment-writer', version: '1.0.0'
     //noinspection GradlePackageUpdate
     testImplementation('org.aspectj:aspectjweaver:1.9.7',
-            "org.seleniumhq.selenium:selenium-java:4.4.0",
-            "io.github.bonigarcia:webdrivermanager:5.3.0",
+            'org.seleniumhq.selenium:selenium-java:4.1.0',
+            'org.seleniumhq.selenium:selenium-api:4.1.0',
+            "io.github.bonigarcia:webdrivermanager:5.3.2",
             "io.qameta.allure:allure-junit5:$allureVersion",
             "org.assertj:assertj-core:3.21.0",
             "commons-io:commons-io:2.11.0",
@@ -40,13 +41,20 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 }
-
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
     sourceCompatibility = 11
     targetCompatibility = 11
 }
-
-tasks.withType(Test) {
-    useJUnitPlatform()
+test {
+    maxParallelForks = Integer.parseInt(System.getProperty("maxParallelForks")?: "1")
+    systemProperty 'BROWSER', System.getProperty('BROWSER', 'chrome')
+    systemProperty 'REMOTE_BROWSER', System.getProperty('REMOTE_BROWSER', 'chrome')
+    useJUnitPlatform {
+        includeTags "uiTest"
+        includeTags "uiTestCart"
+    }
 }
+
+
+
