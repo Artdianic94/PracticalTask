@@ -34,7 +34,6 @@ A project to automate the testing of the Amazon web application. There are 4 tes
 2. In order to execute Docker commands inside Jenkins nodes, download docker:dind using the following docker command:
 
 > docker pull docker:dind
-
   
 3. Build a docker image from Dockerfile in this project and assign the image a meaningful name, e.g. "myjenkins-blueocean:2.375.3-1":
 

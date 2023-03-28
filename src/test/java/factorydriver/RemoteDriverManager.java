@@ -12,59 +12,52 @@ public class RemoteDriverManager extends DriverManager {
     private static final String HUB_URL = "http://selenoid:4444/wd/hub";
 
     @Override
-    public void setUpDriver(){
-        String remoteBrowser = System.getProperty("REMOTE_BROWSER");
+    public void setUpDriver() {
+        selectBrowser(System.getProperty("REMOTE_BROWSER"));
+    }
+
+    public void selectBrowser(String remoteBrowser) {
         if (remoteBrowser == null) {
             throw new IllegalArgumentException("Remote browser is not specified!");
         }
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("enableVNC", true);
-        capabilities.setCapability("enableVideo", true);
 
         switch (remoteBrowser.toLowerCase()) {
             case "chrome":
-                capabilities.setBrowserName("chrome");
-                capabilities.setCapability("version", "latest");
-                capabilities.setCapability("selenoid:options", ImmutableMap.of(
-                        "enableVNC", true,
-                        "enableVideo", true
-                ));
-                try {
-                    driver = new RemoteWebDriver(new URL(HUB_URL), capabilities);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+                setChromeCapabilities(capabilities);
                 break;
             case "firefox":
-                capabilities.setBrowserName("firefox");
-                capabilities.setCapability("version", "latest");
-                capabilities.setCapability("selenoid:options", ImmutableMap.of(
-                        "enableVNC", true,
-                        "enableVideo", true
-                ));
-                try {
-                    driver = new RemoteWebDriver(new URL(HUB_URL), capabilities);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "opera":
-                capabilities.setBrowserName("opera");
-                capabilities.setCapability("version", "latest");
-                capabilities.setCapability("operaOptions", ImmutableMap.of("binary", "/usr/bin/opera"));
-                capabilities.setCapability("selenoid:options", ImmutableMap.of(
-                        "enableVNC", true,
-                        "enableVideo", true
-                ));
-                try {
-                    driver = new RemoteWebDriver(new URL(HUB_URL), capabilities);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+                setFirefoxCapabilities(capabilities);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid remote browser specified: " + remoteBrowser);
         }
+
+        try {
+            driver = new RemoteWebDriver(new URL(HUB_URL), capabilities);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setCommonCapabilities(DesiredCapabilities capabilities) {
+        capabilities.setCapability("selenoid:options", ImmutableMap.of(
+                "sessionTimeout", "15m",
+                "enableVNC", false,
+                "enableVideo", false
+        ));
+    }
+
+    private void setChromeCapabilities(DesiredCapabilities capabilities) {
+        capabilities.setBrowserName("chrome");
+        capabilities.setCapability("version", "latest");
+        setCommonCapabilities(capabilities);
+    }
+
+    private void setFirefoxCapabilities(DesiredCapabilities capabilities) {
+        capabilities.setBrowserName("firefox");
+        capabilities.setCapability("version", "110.0");
+        setCommonCapabilities(capabilities);
     }
 }
